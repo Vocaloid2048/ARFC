@@ -4,11 +4,11 @@ import { Users, Target, Clock, MessageCircle, BarChart } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[var(--page-bg)] ">
       {/* Hero Section */}
       <section className="pt-20 pb-16 px-4 max-w-7xl mx-auto text-center">
         <h1 className="text-5xl md:text-6xl font-extrabold text-slate-100 mb-6 tracking-tight">
-          小組專題<span style={{ color: 'var(--primary-light)' }}>人格測驗</span>
+          小組專題<span style={{ color: 'var(--color-F)' }}>性格測驗</span>
         </h1>
         <p className="text-xl text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
           量化你的分組合作風格，幫助你在團隊中找到最適合的位置，提升合作效率與成果品質。
@@ -20,7 +20,7 @@ export default function Home() {
         <Link
           to="/quiz"
           className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold rounded-full shadow-2xl hover:brightness-90 transition-colors"
-          style={{ backgroundColor: 'var(--primary-light)', color: 'var(--page-bg)', boxShadow: '0 18px 40px rgba(0,0,0,0.45)' }}
+          style={{ backgroundColor: 'var(--color-F)', color: 'var(--page-bg)', boxShadow: '0 18px 40px rgba(0,0,0,0.45)' }}
         >
           開始測試
           <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--page-bg)' }}>

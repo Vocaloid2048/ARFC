@@ -72,7 +72,7 @@ export default function HeaderActions() {
           to="/quiz"
           className="inline-flex items-center px-3 py-2 rounded-full text-sm font-semibold hover:brightness-90 transition"
           style={{
-            backgroundColor: "var(--primary-light)",
+            backgroundColor: "var(--color-F)",
             color: "var(--page-bg)",
             boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
           }}
