@@ -1,11 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const questions = [
-  { id: 1, text: "如果老師說這份準備作業不計分，我會選擇隨便完成就算。" },
-  { id: 2, text: "比起口頭報告內容的深度，我更在意 PPT 排版美觀程度。" },
-  { id: 3, text: "我無法接受組員經常在課堂缺席。" }
-];
+import QuestionZH_HK from '../assets/question/zh_hk.json';
 
 const options = [
   { value: 3, size: "w-12 h-12 md:w-16 md:h-16", border: "border-[3px] border-[#33d282]", bg: "bg-[#33d282]", hover: "hover:bg-[#33d282]/20" },
@@ -17,9 +12,20 @@ const options = [
   { value: -3, size: "w-12 h-12 md:w-16 md:h-16", border: "border-[3px] border-[#7451eb]", bg: "bg-[#7451eb]", hover: "hover:bg-[#7451eb]/20" }
 ];
 
+const randomizeArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
 export default function Quiz() {
-  const [answers, setAnswers] = useState({});
   const navigate = useNavigate();
+  const [answers, setAnswers] = useState({});
+  const [questions] = useState(randomizeArray(QuestionZH_HK));
+  const questionRefs = useRef({});
 
   const handleSelect = (questionId, value) => {
     setAnswers(prev => ({ ...prev, [questionId]: value }));
@@ -27,29 +33,69 @@ export default function Quiz() {
 
   const isAllAnswered = questions.every(q => answers[q.id] !== undefined);
 
+  const handleResultClick = () => {
+    if (isAllAnswered) {
+      navigate('/result');
+    } else {
+      const firstUnanswered = questions.find(q => answers[q.id] === undefined);
+      if (firstUnanswered && questionRefs.current[firstUnanswered.id]) {
+        questionRefs.current[firstUnanswered.id].scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[var(--page-bg)] pt-24 pb-12">
-      <div className="max-w-3xl mx-auto px-4">
-        { /* Progress Bar (Mock) */ }
-        <div className="mb-8">
-          <div className="flex justify-between text-slate-400 text-sm mb-2">
-            <span>測試進度</span>
-            <span>{Object.keys(answers).length} / {questions.length}</span>
-          </div>
-          <div className="w-full bg-slate-800 rounded-full h-2">
-            <div 
-              className="bg-[var(--primary-light)] h-2 rounded-full transition-all duration-300"
-              style={{ width: `${(Object.keys(answers).length / questions.length) * 100}%` }}
-            ></div>
-          </div>
+      <div className="max-w-4xl mx-auto px-4">
+        {/* Title Section */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-bold text-slate-100 mb-4">免費性格測試</h1>
+          <p className="text-xl text-slate-400 font-medium tracking-wide">ARFC Type Indicator</p>
         </div>
 
-        <div className="flex flex-col gap-12">
+        {/* Step Indicator Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+          <div className="bg-slate-900/40 border border-[#80A1BA]/30 rounded-2xl p-6 relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-[#80A1BA]"></div>
+            <span className="bg-[#80A1BA] text-[var(--page-bg)] text-xs font-bold px-3 py-1 rounded-full mb-4 inline-block">第 1 步</span>
+            <h3 className="text-xl font-bold text-slate-100 mb-3">完成測試</h3>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              誠實地回答問題，避免刻意隱瞞或歪曲，以此探尋你實際的人格類型。
+            </p>
+          </div>
+
+          <div className="bg-slate-900/40 border border-[#B4DEBD]/30 rounded-2xl p-6 relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-[#B4DEBD]"></div>
+            <span className="bg-[#B4DEBD] text-[var(--page-bg)] text-xs font-bold px-3 py-1 rounded-full mb-4 inline-block">第 2 步</span>
+            <h3 className="text-xl font-bold text-slate-100 mb-3">查看詳細結果</h3>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              洞悉你獨具特色的人格類型是如何影響你在團隊中的行為模式與合作風格。
+            </p>
+          </div>
+
+          <div className="bg-slate-900/40 border border-[#FFF7DD]/30 rounded-2xl p-6 relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-[#FFF7DD]"></div>
+            <span className="bg-[#FFF7DD] text-[var(--page-bg)] text-xs font-bold px-3 py-1 rounded-full mb-4 inline-block">第 3 步</span>
+            <h3 className="text-xl font-bold text-slate-100 mb-3">找到合適定位</h3>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              憑藉專屬的人格報告，在團隊中發揮所長，找到最適合你的角色定位。
+            </p>
+          </div>
+          </div>
+
+        <div className="flex flex-col gap-12 max-w-3xl mx-auto">
           {questions.map((q) => {
             const hasAnswer = answers[q.id] !== undefined;
             return (
-            <div key={q.id} className={`w-full flex flex-col items-center border-b border-slate-800 pb-12 last:border-0 duration-300 ${hasAnswer ? 'opacity-60' : 'opacity-100'}`}>
-              <h2 className={`text-xl md:text-2xl font-bold mb-8 text-center text-slate-100 leading-relaxed transition-opacity`}>
+            <div 
+              key={q.id} 
+              ref={el => questionRefs.current[q.id] = el}
+              className={`w-full flex flex-col items-center border-b border-slate-800 pb-12 last:border-0 duration-500 scale-95 hover:scale-100 transition-all ${hasAnswer ? 'opacity-40 grayscale-[0.5]' : 'opacity-100'}`}
+            >
+              <h2 className={`text-xl md:text-2xl font-bold mb-8 text-center transition-all ${hasAnswer ? 'text-slate-500' : 'text-slate-100'}`}>
                 {q.text}
               </h2>
 
@@ -102,15 +148,31 @@ export default function Quiz() {
           })}
         </div>
 
-        <div className="mt-12 text-center">
+        { /* Progress Bar (Mock) */ }
+        <div className="mb-8">
+          <div className="flex justify-between text-slate-400 text-sm mb-2">
+            <span>測試進度</span>
+            <span>{Object.keys(answers).length} / {questions.length}</span>
+          </div>
+          <div className="w-full bg-slate-800 rounded-full h-2">
+            <div 
+              className="bg-[var(--color-F)] h-2 rounded-full transition-all duration-300"
+              style={{ width: `${(Object.keys(answers).length / questions.length) * 100}%` }}
+            ></div>
+          </div>
+        </div>
+
+        <div className="mt-20 text-center flex flex-col items-center gap-6">
+          <p className="text-slate-500 text-sm max-w-md">
+            備註：本測試僅供參考，當中評級未經認證及學術研究<br/>我們不會收集任何個人敏感資料<br/>所有測試結果僅儲存於您目前的瀏覽器本地緩存
+          </p>
           <button
-            disabled={!isAllAnswered}
-            onClick={() => navigate('/result')}
+            onClick={handleResultClick}
             className={`
               px-12 py-4 rounded-full font-bold text-lg transition-all duration-300
               ${isAllAnswered 
-                ? 'bg-[var(--primary-light)] text-[var(--page-bg)] hover:scale-105 shadow-[0_0_20px_rgba(242,193,195,0.4)]' 
-                : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                ? 'bg-[var(--color-F)] text-[var(--page-bg)] hover:scale-105 shadow-[0_0_20px_rgba(242,193,195,0.4)]' 
+                : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
               }
             `}
           >

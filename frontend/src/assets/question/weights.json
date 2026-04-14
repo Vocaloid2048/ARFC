@@ -1,0 +1,217 @@
+﻿[
+  {
+    "id": 1,
+    "category": "A",
+    "weight": { "night": 0, "format": 0, "altruist": 0, "calm": 0, "idea": 0, "buffer": 0, "observer": 0, "efficiency": 2, "emotional": -2, "introvert": 0 }
+  },
+  {
+    "id": 2,
+    "category": "A",
+    "weight": { "night": 0, "format": 3, "altruist": 0, "calm": 0, "idea": 1, "buffer": 0, "observer": 0, "efficiency": -1, "emotional": 0, "introvert": 0 }
+  },
+  {
+    "id": 3,
+    "category": "A",
+    "weight": { "night": 0, "format": 1, "altruist": -2, "calm": 0, "idea": 0, "buffer": 0, "observer": 0, "efficiency": 1, "emotional": -1, "introvert": 0 }
+  },
+  {
+    "id": 4,
+    "category": "A",
+    "weight": { "night": 0, "format": 0, "altruist": 3, "calm": 1, "idea": 0, "buffer": 1, "observer": 0, "efficiency": -1, "emotional": 3, "introvert": 0 }
+  },
+  {
+    "id": 5,
+    "category": "A",
+    "weight": { "night": 0, "format": 2, "altruist": -1, "calm": 0, "idea": 0, "buffer": 0, "observer": 0, "efficiency": 1, "emotional": -1, "introvert": 0 }
+  },
+  {
+    "id": 6,
+    "category": "A",
+    "weight": { "night": 0, "format": 0, "altruist": 2, "calm": 0, "idea": 0, "buffer": 0, "observer": 0, "efficiency": 0, "emotional": 1, "introvert": 0 }
+  },
+  {
+    "id": 7,
+    "category": "A",
+    "weight": { "night": 0, "format": 0, "altruist": 1, "calm": 2, "idea": -1, "buffer": 0, "observer": 0, "efficiency": 0, "emotional": 0, "introvert": 0 }
+  },
+  {
+    "id": 8,
+    "category": "A",
+    "weight": { "night": 0, "format": 3, "altruist": 0, "calm": 1, "idea": 0, "buffer": 0, "observer": 0, "efficiency": 0, "emotional": 0, "introvert": 0 }
+  },
+  {
+    "id": 9,
+    "category": "A",
+    "weight": { "night": 0, "format": 2, "altruist": -1, "calm": 2, "idea": -1, "buffer": 0, "observer": 0, "efficiency": 1, "emotional": -2, "introvert": 0 }
+  },
+  {
+    "id": 10,
+    "category": "A",
+    "weight": { "night": 0, "format": 0, "altruist": -3, "calm": 1, "idea": 0, "buffer": -2, "observer": -1, "efficiency": 3, "emotional": -3, "introvert": 0 }
+  },
+  {
+    "id": 11,
+    "category": "A",
+    "weight": { "night": 0, "format": 1, "altruist": 0, "calm": -2, "idea": 0, "buffer": 0, "observer": 0, "efficiency": 0, "emotional": 3, "introvert": 0 }
+  },
+  {
+    "id": 12,
+    "category": "A",
+    "weight": { "night": 0, "format": -1, "calm": 1, "idea": 3, "buffer": -2, "observer": 0, "efficiency": 0, "emotional": 0, "introvert": 0 }
+  },
+  {
+    "id": 13,
+    "category": "R",
+    "weight": { "night": 0, "format": 2, "altruist": 1, "calm": 1, "idea": 0, "buffer": 2, "observer": 0, "efficiency": 2, "emotional": 0, "introvert": 0 }
+  },
+  {
+    "id": 14,
+    "category": "R",
+    "weight": { "night": 2, "format": -1, "altruist": -1, "calm": 2, "idea": 0, "buffer": -3, "observer": 0, "efficiency": 3, "emotional": 0, "introvert": 0 }
+  },
+  {
+    "id": 15,
+    "category": "R",
+    "weight": { "night": 0, "format": 0, "altruist": 0, "calm": -2, "idea": 0, "buffer": -1, "observer": 0, "efficiency": -1, "emotional": 2, "introvert": 2 }
+  },
+  {
+    "id": 16,
+    "category": "R",
+    "weight": { "night": 0, "format": 0, "altruist": 0, "calm": 0, "idea": -1, "buffer": 0, "observer": 0, "efficiency": -1, "emotional": 1, "introvert": 1 }
+  },
+  {
+    "id": 17,
+    "category": "R",
+    "weight": { "night": 0, "format": 0, "altruist": 0, "calm": 1, "idea": 0, "buffer": 2, "observer": 0, "efficiency": 2, "emotional": -1, "introvert": 0 }
+  },
+  {
+    "id": 18,
+    "category": "R",
+    "weight": { "night": 0, "format": 1, "altruist": 0, "calm": 2, "idea": 0, "buffer": 3, "observer": 0, "efficiency": 0, "emotional": 0, "introvert": 0 }
+  },
+  {
+    "id": 19,
+    "category": "R",
+    "weight": { "night": 3, "format": 0, "altruist": 0, "calm": 0, "idea": 1, "buffer": 0, "observer": 0, "efficiency": 0, "emotional": 0, "introvert": 2 }
+  },
+  {
+    "id": 20,
+    "category": "R",
+    "weight": { "night": 0, "format": 2, "altruist": 1, "calm": 1, "idea": 0, "buffer": -2, "observer": 0, "efficiency": 2, "emotional": 1, "introvert": 0 }
+  },
+  {
+    "id": 21,
+    "category": "R",
+    "weight": { "night": -1, "format": 2, "altruist": 0, "calm": 3, "idea": -1, "buffer": 3, "observer": 0, "efficiency": 2, "emotional": 0, "introvert": 0 }
+  },
+  {
+    "id": 22,
+    "category": "R",
+    "weight": { "night": 0, "format": 0, "altruist": 1, "calm": 3, "idea": 0, "buffer": -2, "observer": 0, "efficiency": 2, "emotional": 1, "introvert": 0 }
+  },
+  {
+    "id": 23,
+    "category": "F",
+    "weight": { "night": 0, "format": 1, "altruist": 1, "calm": 0, "idea": 0, "buffer": 0, "observer": 0, "efficiency": 0, "emotional": 0, "introvert": 3 }
+  },
+  {
+    "id": 24,
+    "category": "F",
+    "weight": { "night": 0, "format": 3, "altruist": 0, "calm": 1, "idea": 0, "buffer": 0, "observer": 0, "efficiency": 0, "emotional": 0, "introvert": 0 }
+  },
+  {
+    "id": 25,
+    "category": "F",
+    "weight": { "night": 0, "format": 0, "altruist": 0, "calm": 2, "idea": 1, "buffer": 0, "observer": 2, "efficiency": 1, "emotional": 1, "introvert": -2 }
+  },
+  {
+    "id": 26,
+    "category": "F",
+    "weight": { "night": 0, "format": 0, "altruist": 1, "calm": 2, "idea": 0, "buffer": 1, "observer": 1, "efficiency": 2, "emotional": 1, "introvert": -1 }
+  },
+  {
+    "id": 27,
+    "category": "F",
+    "weight": { "night": 0, "format": 0, "altruist": 0, "calm": 1, "idea": 0, "buffer": 1, "observer": 1, "efficiency": 2, "emotional": 1, "introvert": -2 }
+  },
+  {
+    "id": 28,
+    "category": "F",
+    "weight": { "night": 0, "format": 0, "altruist": -1, "calm": 1, "idea": 0, "buffer": -1, "observer": 0, "efficiency": 1, "emotional": -2, "introvert": 0 }
+  },
+  {
+    "id": 29,
+    "category": "F",
+    "weight": { "night": 0, "format": 0, "altruist": 0, "calm": 0, "idea": 0, "buffer": 0, "observer": -1, "efficiency": 0, "emotional": 0, "introvert": 3 }
+  },
+  {
+    "id": 30,
+    "category": "F",
+    "weight": { "night": 0, "format": -1, "altruist": 0, "calm": 0, "idea": 3, "buffer": 0, "observer": 0, "efficiency": 0, "emotional": 0, "introvert": 0 }
+  },
+  {
+    "id": 31,
+    "category": "F",
+    "weight": { "night": 0, "format": 0, "altruist": -3, "calm": 1, "idea": -1, "buffer": 0, "observer": -2, "efficiency": 1, "emotional": -2, "introvert": 1 }
+  },
+  {
+    "id": 32,
+    "category": "F",
+    "weight": { "night": 0, "format": 0, "altruist": 1, "calm": 3, "idea": 1, "buffer": 0, "observer": 2, "efficiency": 1, "emotional": 1, "introvert": -1 }
+  },
+  {
+    "id": 33,
+    "category": "C",
+    "weight": { "night": 0, "format": 0, "altruist": 2, "calm": 0, "idea": 0, "buffer": 0, "observer": 1, "efficiency": -1, "emotional": 2, "introvert": 2 }
+  },
+  {
+    "id": 34,
+    "category": "C",
+    "weight": { "night": 0, "format": 0, "altruist": 0, "calm": 0, "idea": 0, "buffer": 0, "observer": 2, "efficiency": 1, "emotional": 1, "introvert": -2 }
+  },
+  {
+    "id": 35,
+    "category": "C",
+    "weight": { "night": 0, "format": 0, "altruist": 2, "calm": 0, "idea": 0, "buffer": 0, "observer": 0, "efficiency": -1, "emotional": 3, "introvert": -1 }
+  },
+  {
+    "id": 36,
+    "category": "C",
+    "weight": { "night": 0, "format": 0, "altruist": 2, "calm": 0, "idea": 0, "buffer": 0, "observer": 0, "efficiency": 0, "emotional": 3, "introvert": 0 }
+  },
+  {
+    "id": 37,
+    "category": "C",
+    "weight": { "night": 0, "format": 0, "altruist": 0, "calm": 1, "idea": 0, "buffer": 0, "observer": 2, "efficiency": 0, "emotional": 1, "introvert": 3 }
+  },
+  {
+    "id": 38,
+    "category": "C",
+    "weight": { "night": 0, "format": 0, "altruist": 1, "calm": 1, "idea": 0, "buffer": 0, "observer": 2, "efficiency": 0, "emotional": 2, "introvert": 2 }
+  },
+  {
+    "id": 39,
+    "category": "C",
+    "weight": { "night": 0, "format": 0, "altruist": 0, "calm": 0, "idea": 0, "buffer": 0, "observer": 1, "efficiency": -1, "emotional": 2, "introvert": 3 }
+  },
+  {
+    "id": 40,
+    "category": "C",
+    "weight": { "night": 0, "format": 0, "altruist": 0, "calm": 0, "idea": 0, "buffer": 0, "observer": 1, "efficiency": 0, "emotional": 2, "introvert": 2 }
+  },
+  {
+    "id": 41,
+    "category": "C",
+    "weight": { "night": 0, "format": 0, "altruist": -2, "calm": 2, "idea": 0, "buffer": 0, "observer": -1, "efficiency": 1, "emotional": -3, "introvert": 1 }
+  },
+  {
+    "id": 42,
+    "category": "C",
+    "weight": { "night": 0, "format": 0, "altruist": 2, "calm": 2, "idea": 0, "buffer": 0, "observer": 3, "efficiency": 1, "emotional": 2, "introvert": 0 }
+  },
+  {
+    "id": 43,
+    "category": "C",
+    "weight": { "night": 0, "format": 0, "altruist": 1, "calm": 1, "idea": 0, "buffer": 0, "observer": 3, "efficiency": 0, "emotional": 1, "introvert": 1 }
+  }
+]
