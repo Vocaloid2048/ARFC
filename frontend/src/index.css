@@ -1,5 +1,49 @@
 @import "tailwindcss";
+
+:root {
+  /* Theme colors */
+  --primary-light: #f2c1c3; /* 淺色 */
+  --primary-dark: #fa7d81; /* 深色 */
+
+  /* Indicator main colors */
+  --color-A: #FF76CE;
+  --color-R: #FDFFC2;
+  --color-F: #94FFD8;
+  --color-C: #A3D8FF;
+
+  /* indicator backgrounds (soft tints) */
+  --bg-A: rgba(255,118,206,0.12);
+  --bg-R: rgba(253,255,194,0.12);
+  --bg-F: rgba(148,255,216,0.12);
+  --bg-C: rgba(163,216,255,0.12);
+
+  --page-bg: #071123; /* deep background */
+  --text: #e6eef8;
+
+  /* darker variants for indicator labels */
+  --color-A-dark: #C04D8F;
+  --color-R-dark: #D6D98A;
+  --color-F-dark: #57CFA7;
+  --color-C-dark: #5EAEEB;
+}
+
+
 body {
   font-family: system-ui, sans-serif;
-  background-color: #f8fafc;
+  background-color: var(--page-bg);
+  color: var(--text);
 }
+
+/* Utility to use indicator card colors */
+.indicator-bg-A { background-color: var(--bg-A); }
+.indicator-text-A { color: var(--color-A); }
+.indicator-text-A-dark { color: var(--color-A-dark); }
+.indicator-bg-R { background-color: var(--bg-R); }
+.indicator-text-R { color: var(--color-R); }
+.indicator-text-R-dark { color: var(--color-R-dark); }
+.indicator-bg-F { background-color: var(--bg-F); }
+.indicator-text-F { color: var(--color-F); }
+.indicator-text-F-dark { color: var(--color-F-dark); }
+.indicator-bg-C { background-color: var(--bg-C); }
+.indicator-text-C { color: var(--color-C); }
+.indicator-text-C-dark { color: var(--color-C-dark); }

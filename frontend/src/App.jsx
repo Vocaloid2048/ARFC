@@ -8,13 +8,13 @@ import HeaderActions from './components/HeaderActions'
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-slate-50 font-sans">
-        <nav className="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
+      <div className="min-h-screen bg-slate-800 font-sans">
+        <nav className="bg-slate-900 border-b border-slate-500 sticky top-0 z-50 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex items-center">
-                <Link to="/" className="text-xl font-extrabold text-indigo-600 tracking-tight flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-sm">
+                <Link to="/" className="text-xl font-extrabold tracking-tight flex items-center gap-2" style={{ color: 'var(--primary-light)' }}>
+                  <span className="w-8 h-8 rounded-lg text-white flex items-center justify-center text-sm" style={{ backgroundColor: 'var(--primary-light)' }}>
                     AR
                   </span>
                   <span>ARFC</span>

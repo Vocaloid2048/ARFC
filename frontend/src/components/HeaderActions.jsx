@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Star, Globe } from "lucide-react";
-import githubIcon from "../assets/github_icon.svg";
+import { Star, Globe, Menu, Info, ArrowBigRightDash } from "lucide-react";
+import GitHubIcon from "../assets/github_icon.svg?react";
 import { Link } from "react-router-dom";
 
 function GitHubButton({ repo = "vocaloid2048/ARFC" }) {
@@ -25,7 +25,7 @@ function GitHubButton({ repo = "vocaloid2048/ARFC" }) {
   }, [repo]);
 
   return (
-    <div className="inline-flex items-center rounded-full hover:bg-slate-100 px-2">
+    <div className="inline-flex items-center rounded-full hover:bg-slate-800 px-2">
       <a
         href={`https://github.com/${repo}`}
         target="_blank"
@@ -33,12 +33,13 @@ function GitHubButton({ repo = "vocaloid2048/ARFC" }) {
         className="inline-flex items-center gap-2 justify-center h-10 rounded-full transition"
         aria-label="GitHub repo"
       >
-        <img src={githubIcon} alt="GitHub" className="w-5 h-5 text-slate-700" />
+        <GitHubIcon className="w-5 h-5" fill="white" />
 
-        <div className="text-sm text-slate-700 flex items-center">
+        <div className="text-sm text-slate-100 flex items-center">
           <Star className="w-4 h-4 text-yellow-500" />
-          <blank className="w-1" />
-          <span>{stars !== null ? stars.toLocaleString() : "載入中"}</span>
+          <span className="ml-1">
+            {stars !== null ? stars.toLocaleString() : "載入中"}
+          </span>
         </div>
       </a>
     </div>
@@ -46,30 +47,114 @@ function GitHubButton({ repo = "vocaloid2048/ARFC" }) {
 }
 
 export default function HeaderActions() {
-  return (
-    <div className="flex items-center space-x-3">
-      <GitHubButton />
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-      <div className="relative">
-        <button className="inline-flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 transition">
-          <Globe className="w-4 h-4 text-slate-700" />
-          <span className="text-sm text-slate-700">繁體中文</span>
-        </button>
+  return (
+    <div className="relative flex items-center">
+      {/* Desktop / wide screens: show inline */}
+      <div className="hidden md:flex items-center space-x-3">
+        <GitHubButton />
+        <div className="relative">
+          <button className="inline-flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition">
+            <Globe className="w-4 h-4 text-slate-100" />
+            <span className="text-sm text-slate-100">繁體中文</span>
+          </button>
+        </div>
+
+        <div className="relative" onClick={() => window.location.href = "/about"}>
+          <button className="inline-flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition">
+            <Info className="w-4 h-4 text-slate-100" />
+            <span className="text-sm text-slate-100">關於專案</span>
+          </button>
+        </div>
+
+        <Link
+          to="/quiz"
+          className="inline-flex items-center px-3 py-2 rounded-full text-sm font-semibold hover:brightness-90 transition"
+          style={{
+            backgroundColor: "var(--primary-light)",
+            color: "var(--page-bg)",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
+          }}
+        >
+          立即測試
+        </Link>
       </div>
 
-      <Link
-        to="/about"
-        className="text-sm text-slate-700 hover:bg-slate-100 transition px-3 py-2 rounded-lg"
-      >
-        關於專案
-      </Link>
+      {/* Mobile / narrow screens: show a compact menu button that opens a droplist */}
+      <div className="md:hidden flex items-center">
+        <button
+          aria-label="更多選項"
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full hover:bg-slate-100 transition"
+          onClick={() => setMobileOpen((v) => !v)}
+        >
+          <Menu className="w-5 h-5 text-slate-700" />
+        </button>
 
-      <Link
-        to="/quiz"
-        className="inline-flex items-center px-3 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold hover:bg-indigo-700 transition"
-      >
-        立即測驗
-      </Link>
+        {mobileOpen && (
+          <div className="absolute right-0 top-12 z-50 w-60 bg-slate-900 border border-slate-800 shadow-md rounded-lg overflow-hidden">
+            <div className="divide-y divide-slate-800">
+              <a
+                href={`https://github.com/vocaloid2048/ARFC`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-slate-600"
+              >
+                <div className="flex items-center gap-3">
+                  <GitHubIcon className="w-5 h-5" fill="white" />
+                  <div className="text-sm text-slate-100">GitHub</div>
+                </div>
+                <div className="flex items-center text-sm text-slate-100 gap-1">
+                  <Star className="w-4 h-4 text-yellow-500" />
+                  <span>
+                    {/* star count */}
+                    {/* show fetched count if available */}
+                    {/* use aria-hidden span for value */}
+                    <GitHubStarCount repo="vocaloid2048/ARFC" />
+                  </span>
+                </div>
+              </a>
+
+              <button className="w-full text-left px-4 py-3 hover:bg-slate-600 flex items-center gap-3">
+                <Globe className="w-4 h-4 text-slate-100" />
+                <span className="text-sm text-slate-100">繁體中文</span>
+              </button>
+
+                <button className="w-full text-left px-4 py-3 hover:bg-slate-600 flex items-center gap-3" onClick={() => window.location.href = "/about"}>
+                  <Info className="w-4 h-4 text-slate-100" />
+                  <span className="text-sm text-slate-100">關於專案</span>
+                </button>
+                <button className="w-full text-left px-4 py-3 flex items-center gap-3 hover:bg-[#fa7d81]" onClick={() => window.location.href = "/quiz"}>
+                  <ArrowBigRightDash className="w-4 h-4 text-slate-100" />
+                  <span className="text-sm text-slate-100">立即測試</span>
+                </button>
+
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
+}
+
+function GitHubStarCount({ repo = "vocaloid2048/ARFC" }) {
+  const [stars, setStars] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    fetch(`https://api.github.com/repos/${repo}`)
+      .then((r) => {
+        if (!r.ok) throw new Error("bad");
+        return r.json();
+      })
+      .then((j) => {
+        if (mounted) setStars(j.stargazers_count);
+      })
+      .catch(() => {});
+    return () => {
+      mounted = false;
+    };
+  }, [repo]);
+
+  return <>{stars !== null ? stars.toLocaleString() : "載入中"}</>;
 }
