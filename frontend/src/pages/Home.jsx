@@ -87,7 +87,7 @@ export default function Home() {
               <div className="flex justify-between items-center text-sm font-medium">
                 <span className="indicator-text-C">直接高效（D）</span>
                 <span className="text-slate-500 mx-2">vs</span>
-                <span className="indicator-text-C-dark text-right">婉轉和諧（H）</span>
+                <span className="indicator-text-C-dark text-right">婉轉和諧（T）</span>
               </div>
             </div>
 

@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuestionZH_HK from '../assets/question/zh_hk.json';
+import { calculateResult } from '../utils/resultCalculation';
 
 const options = [
   { value: 3, size: "w-12 h-12 md:w-16 md:h-16", border: "border-[3px] border-[#33d282]", bg: "bg-[#33d282]", hover: "hover:bg-[#33d282]/20" },
@@ -35,6 +36,11 @@ export default function Quiz() {
 
   const handleResultClick = () => {
     if (isAllAnswered) {
+      // Calculate results and store in localStorage for the result page to read
+      const result = calculateResult(answers);
+      localStorage.setItem('arfc_result', JSON.stringify(result));
+
+      // Navigate to the result page
       navigate('/result');
     } else {
       const firstUnanswered = questions.find(q => answers[q.id] === undefined);
@@ -154,7 +160,7 @@ export default function Quiz() {
             <span>測試進度</span>
             <span>{Object.keys(answers).length} / {questions.length}</span>
           </div>
-          <div className="w-full bg-slate-800 rounded-full h-2">
+          <div className="w-full bg-slate-700 rounded-full h-2">
             <div 
               className="bg-[var(--color-F)] h-2 rounded-full transition-all duration-300"
               style={{ width: `${(Object.keys(answers).length / questions.length) * 100}%` }}
@@ -164,7 +170,7 @@ export default function Quiz() {
 
         <div className="mt-20 text-center flex flex-col items-center gap-6">
           <p className="text-slate-500 text-sm max-w-md">
-            備註：本測試僅供參考，當中評級未經認證及學術研究<br/>我們不會收集任何個人敏感資料<br/>所有測試結果僅儲存於您目前的瀏覽器本地緩存
+            備註：本測試僅供參考，當中評級未經學術研究認證<br/>我們不會收集任何個人敏感資料<br/>所有測試結果僅儲存於您目前的瀏覽器本地緩存
           </p>
           <button
             onClick={handleResultClick}
