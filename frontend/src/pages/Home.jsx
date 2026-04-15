@@ -4,7 +4,7 @@ import { Users, Target, Clock, MessageCircle, BarChart } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[var(--page-bg)] ">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section className="pt-20 pb-16 px-4 max-w-7xl mx-auto text-center">
         <h1 className="text-5xl md:text-6xl font-extrabold text-slate-100 mb-6 tracking-tight">
@@ -43,7 +43,7 @@ export default function Home() {
               <h3 className="text-xl font-bold text-slate-100 mb-2">態度目標 (A)</h3>
               <p className="text-slate-300 text-sm mb-4">你對成績的期望是什麼？</p>
               <div className="flex justify-between items-center text-sm font-medium">
-                <span className="indicator-text-A">追求高分（H）</span>
+                <span className="indicator-text-A">卓越高標（H）</span>
                 <span className="text-slate-500 mx-2">vs</span>
                 <span className="indicator-text-A-dark text-right">及格就好（P）</span>
               </div>

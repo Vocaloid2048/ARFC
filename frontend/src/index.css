@@ -8,20 +8,26 @@
   --color-F: #2ae19e;
   --color-C: #2992de;
 
+  /* darker variants for indicator labels */
+  --color-A-dark: #a9226f;
+  --color-R-dark: #d2a158;
+  --color-F-dark: #279570;
+  --color-C-dark: #356f9c;
+
   /* indicator backgrounds (soft tints) */
   --bg-A: rgba(255,118,206,0.12);
   --bg-R: rgba(253,255,194,0.12);
   --bg-F: rgba(148,255,216,0.12);
   --bg-C: rgba(163,216,255,0.12);
 
-  --page-bg: #1E293B; /* deep background */
+  --page-bg: rgb(12, 26, 50); /* deep background */
+  --dark-bg: #141921; /* deep background */
+  --nav-bg: #0f1724; /* for nav and cards */
   --text: #e6eef8;
+  --text-inverse: #1E293B; /* for light backgrounds */
+  --agree: #2ae19e;
+  --disagree: #7451eb;
 
-  /* darker variants for indicator labels */
-  --color-A-dark: #a9226f;
-  --color-R-dark: #d2a158;
-  --color-F-dark: #279570;
-  --color-C-dark: #356f9c;
 }
 
 
@@ -44,3 +50,4 @@ body {
 .indicator-bg-C { background-color: var(--bg-C); }
 .indicator-text-C { color: var(--color-C); }
 .indicator-text-C-dark { color: var(--color-C-dark); }
+.textauto{color: var(--text); mix-blend-mode: exclusion;}
