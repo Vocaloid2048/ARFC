@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Target, Clock, MessageCircle, BarChart } from 'lucide-react';
+import Translation from "../assets/lang/zh_hk.json";
 
 export default function Home() {
+  const translation = Translation.ui;
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -40,12 +42,12 @@ export default function Home() {
               <div className="w-12 h-12 indicator-bg-A indicator-text-A rounded-xl flex items-center justify-center mb-6">
                 <Target size={24} />
               </div>
-              <h3 className="text-xl font-bold text-slate-100 mb-2">態度目標 (A)</h3>
+              <h3 className="text-xl font-bold text-slate-100 mb-2">{translation.arfc_attitude_target} (A)</h3>
               <p className="text-slate-300 text-sm mb-4">你對成績的期望是什麼？</p>
               <div className="flex justify-between items-center text-sm font-medium">
-                <span className="indicator-text-A">卓越高標（H）</span>
+                <span className="indicator-text-A">{translation.arfc_high_standards}（H）</span>
                 <span className="text-slate-500 mx-2">vs</span>
-                <span className="indicator-text-A-dark text-right">及格就好（P）</span>
+                <span className="indicator-text-A-dark text-right">{translation.arfc_pass_oriented}（P）</span>
               </div>
             </div>
 
@@ -54,12 +56,12 @@ export default function Home() {
               <div className="w-12 h-12 indicator-bg-R indicator-text-R rounded-xl flex items-center justify-center mb-6">
                 <Clock size={24} />
               </div>
-              <h3 className="text-xl font-bold text-slate-100 mb-2">處事節奏 (R)</h3>
+              <h3 className="text-xl font-bold text-slate-100 mb-2">{translation.arfc_rythm_of_work} (R)</h3>
               <p className="text-slate-300 text-sm mb-4">你的做事步調是？</p>
               <div className="flex justify-between items-center text-sm font-medium">
-                <span className="indicator-text-R">預留緩衝（R）</span>
+                <span className="indicator-text-R">{translation.arfc_reserve_buffer}（R）</span>
                 <span className="text-slate-500 mx-2">vs</span>
-                <span className="indicator-text-R-dark text-right">壓線衝刺（S）</span>
+                <span className="indicator-text-R-dark text-right">{translation.arfc_sprint_deadline}（S）</span>
               </div>
             </div>
 
@@ -68,12 +70,12 @@ export default function Home() {
               <div className="w-12 h-12 indicator-bg-F indicator-text-F rounded-xl flex items-center justify-center mb-6">
                 <Users size={24} />
               </div>
-              <h3 className="text-xl font-bold text-slate-100 mb-2">角色分工 (F)</h3>
+              <h3 className="text-xl font-bold text-slate-100 mb-2">{translation.arfc_function} (F)</h3>
               <p className="text-slate-300 text-sm mb-4">在團隊中你習慣扮演？</p>
               <div className="flex justify-between items-center text-sm font-medium">
-                <span className="indicator-text-F">領航協調（L）</span>
+                <span className="indicator-text-F">{translation.arfc_facilitator}（L）</span>
                 <span className="text-slate-500 mx-2">vs</span>
-                <span className="indicator-text-F-dark text-right">後勤執行（B）</span>
+                <span className="indicator-text-F-dark text-right">{translation.arfc_backuper}（B）</span>
               </div>
             </div>
 
@@ -82,12 +84,12 @@ export default function Home() {
               <div className="w-12 h-12 indicator-bg-C indicator-text-C rounded-xl flex items-center justify-center mb-6">
                 <MessageCircle size={24} />
               </div>
-              <h3 className="text-xl font-bold text-slate-100 mb-2">溝通方式 (C)</h3>
+              <h3 className="text-xl font-bold text-slate-100 mb-2">{translation.arfc_communication} (C)</h3>
               <p className="text-slate-300 text-sm mb-4">你偏好的溝通方式？</p>
               <div className="flex justify-between items-center text-sm font-medium">
-                <span className="indicator-text-C">直接高效（D）</span>
+                <span className="indicator-text-C">{translation.arfc_direct_efficiency}（D）</span>
                 <span className="text-slate-500 mx-2">vs</span>
-                <span className="indicator-text-C-dark text-right">婉轉和諧（T）</span>
+                <span className="indicator-text-C-dark text-right">{translation.arfc_tactful_harmonious}（T）</span>
               </div>
             </div>
 
