@@ -10,6 +10,11 @@ export default function Result() {
     const [result, setResult] = useState(null);
     const translation = Translation.ui;
 
+    // Ensure page is at top when Result mounts
+    useEffect(() => {
+        try { window.scrollTo({ top: 0, left: 0, behavior: 'auto' }); } catch (e) { /* ignore */ }
+    }, []);
+
     useEffect(() => {
         const saved = localStorage.getItem('arfc_result');
         if (saved) {
@@ -95,7 +100,7 @@ export default function Result() {
     return (
         <div className="min-h-screen font-sans text-slate-200">
             <section
-                className="relative w-full pt-32 pb-32 overflow-hidden"
+                className="relative w-full pt-32 pb-12 overflow-hidden"
             >
                 {/* Organic Glowing Background Blobs using cBgDeco, cSecondary, cPrimary, cHighlight */}
                 <div className="absolute top-0 right-0 -m-32 w-[600px] h-[600px] rounded-full opacity-30 mix-blend-screen filter blur-[100px] pointer-events-none" style={{ backgroundColor: cBgDeco }}></div>
@@ -107,7 +112,7 @@ export default function Result() {
                 <div className="absolute bottom-0 right-10 w-[420px] h-[420px] rounded-full opacity-18 mix-blend-screen filter blur-[90px] pointer-events-none" style={{ backgroundColor: cPrimary }}></div>
                 <div className="absolute top-28 right-44 w-[220px] h-[220px] rounded-full opacity-22 mix-blend-screen filter blur-[70px] pointer-events-none" style={{ backgroundColor: cSecondary }}></div>
                 
-                <div className="max-w-6xl mx-auto px-6 relative z-10 flex flex-col-reverse md:flex-row items-center gap-16">
+                <div className="max-w-6xl mx-auto px-6 relative z-10 flex flex-col-reverse md:flex-row items-center gap-8">
 
                     {/* Left Text Content */}
                     <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left">
@@ -171,6 +176,15 @@ export default function Result() {
                         </h3>
                         <p className="text-2xl font-black text-white leading-snug relative z-10">
                             <span style={{ color: "#FFFFFF"}}>{roleLocaleInfo?.desc}</span>
+                        </p>
+
+                        <blank className="block h-6"></blank>
+
+                        <h3 className="text-lg font-bold tracking-[0.2em] text-slate-400 mb-4 uppercase" style={{ color: cHighlight }}>
+                            個人介紹
+                        </h3>
+                        <p className="text-2xl font-black text-white leading-snug relative z-10">
+                            <span style={{ color: "#FFFFFF"}}>{roleLocaleInfo?.self_intro}</span>
                         </p>
                     </div>
                 </div>
