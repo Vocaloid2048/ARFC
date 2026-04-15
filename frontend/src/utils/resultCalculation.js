@@ -1,7 +1,7 @@
 import questionsMeta from '../assets/question_weights.json';
 import Translation from "../assets/lang/zh_hk.json";
 
-const map = {
+export const arfcMap = {
     A: { pos: 'P', neg: 'H' },
     R: { pos: 'S', neg: 'R' },
     F: { pos: 'B', neg: 'L' },
@@ -65,7 +65,7 @@ export function calculateResult(answers) {
 
     const suggestedARFC = (() => {
         const order = ['A', 'R', 'F', 'C'];
-        return order.map(k => (scores[k] > 0 ? map[k].pos : map[k].neg)).join('');
+        return order.map(k => (scores[k] > 0 ? arfcMap[k].pos : arfcMap[k].neg)).join('');
     })();
 
     const bestARFCPart = { "dimension": "", "part": "", "percentage": 0 };
@@ -76,7 +76,7 @@ export function calculateResult(answers) {
         if (absScore > maxAbsScore) {
             maxAbsScore = absScore;
             bestARFCPart.dimension = k;
-            bestARFCPart.part = scores[k] > 0 ? map[k].pos : map[k].neg;
+            bestARFCPart.part = scores[k] > 0 ? arfcMap[k].pos : arfcMap[k].neg;
             bestARFCPart.percentage = Math.abs(scores[k]);
         }
     }
