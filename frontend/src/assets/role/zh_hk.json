@@ -1,0 +1,19 @@
+[
+    {"id": 1, "animal_name": "獅子", "tagName": "卓越領航者"},
+    {"id": 2, "animal_name": "天鵝", "tagName": "溫雅統籌者"},
+    {"id": 3, "animal_name": "狗", "tagName": "嚴謹實踐者"},
+    {"id": 4, "animal_name": "貓", "tagName": "靜謐守護者"},
+    {"id": 5, "animal_name": "獵豹", "tagName": "敏捷決策者"},
+    {"id": 6, "animal_name": "海豚", "tagName": "靈動共情者"},
+    {"id": 7, "animal_name": "老鷹", "tagName": "銳意開拓者"},
+    {"id": 8, "animal_name": "貓頭鷹", "tagName": "深邃思辨者"},
+
+    {"id": 9, "animal_name": "狼", "tagName": "務實管理者"},
+    {"id": 10, "animal_name": "金毛尋回犬", "tagName": "親和穩定者"},
+    {"id": 11, "animal_name": "大象", "tagName": "效率基石者"},
+    {"id": 12, "animal_name": "水豚", "tagName": "舒朗協作者"},
+    {"id": 13, "animal_name": "浣熊", "tagName": "智巧引導者"},
+    {"id": 14, "animal_name": "狐狸", "tagName": "圓融創意者"},
+    {"id": 15, "animal_name": "樹懶", "tagName": "精簡執行者"},
+    {"id": 16, "animal_name": "熊貓", "tagName": "隨性支援者"}
+]
