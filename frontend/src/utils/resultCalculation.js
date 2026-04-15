@@ -1,4 +1,12 @@
-import questionsMeta from '../assets/question/weights.json';
+import questionsMeta from '../assets/question_weights.json';
+import Translation from "../assets/lang/zh_hk.json";
+
+const map = {
+    A: { pos: 'P', neg: 'H' },
+    R: { pos: 'S', neg: 'R' },
+    F: { pos: 'B', neg: 'L' },
+    C: { pos: 'T', neg: 'D' }
+};
 
 export function calculateResult(answers) {
     // Initialize scores for each dimension
@@ -11,15 +19,15 @@ export function calculateResult(answers) {
 
     // Initialize tag weights for tag recommendation
     const tagWeights = {
-        night: 0, 
-        format: 0, 
-        altruist: 0, 
-        calm: 0, 
-        idea: 0, 
-        buffer: 0, 
-        observer: 0, 
-        efficiency: 0, 
-        emotional: 0, 
+        night: 0,
+        format: 0,
+        altruist: 0,
+        calm: 0,
+        idea: 0,
+        buffer: 0,
+        observer: 0,
+        efficiency: 0,
+        emotional: 0,
         introvert: 0
     };
 
@@ -55,25 +63,12 @@ export function calculateResult(answers) {
         else scores[k] = 0;
     }
 
-    // Derive a 4-letter code from A,R,F,C sign (positive -> one letter, negative/zero -> alternative)
-    // Mapping can be adjusted; current letters chosen as placeholders matching earlier examples:
-    // A: negative -> 'H', positive -> 'P'
-    // R: negative -> 'R', positive -> 'S'
-    // F: negative -> 'L', positive -> 'B'
-    // C: negative -> 'D', positive -> 'T'
-    // Example: all negative => 'HRLD', all positive => 'PSBT'
     const suggestedARFC = (() => {
-        const map = {
-            A: { pos: 'P', neg: 'H' },
-            R: { pos: 'S', neg: 'R' },
-            F: { pos: 'B', neg: 'L' },
-            C: { pos: 'T', neg: 'D' }
-        };
         const order = ['A', 'R', 'F', 'C'];
         return order.map(k => (scores[k] > 0 ? map[k].pos : map[k].neg)).join('');
     })();
-    
-    const bestARFCPart = {"dimension": "", "part": ""};
+
+    const bestARFCPart = { "dimension": "", "part": "", "percentage": 0 };
     // Determine which dimension has the highest absolute score and its corresponding part
     let maxAbsScore = -1;
     for (const k of Object.keys(scores)) {
@@ -81,7 +76,8 @@ export function calculateResult(answers) {
         if (absScore > maxAbsScore) {
             maxAbsScore = absScore;
             bestARFCPart.dimension = k;
-            bestARFCPart.part = scores[k] > 0 ? 'positive' : 'negative';
+            bestARFCPart.part = scores[k] > 0 ? map[k].pos : map[k].neg;
+            bestARFCPart.percentage = Math.abs(scores[k]);
         }
     }
 
@@ -92,5 +88,44 @@ export function calculateResult(answers) {
         .sort((a, b) => Math.abs(b.score) - Math.abs(a.score))
         .slice(0, 3);
 
-    return { scores, tagWeights, tagRecommend, suggestedARFC, bestARFCPart};
+    return { scores, tagWeights, tagRecommend, suggestedARFC, bestARFCPart };
+}
+export function convertARFCToLocale(arfcCode) {
+    const translation = Translation.ui;
+    switch (arfcCode) {
+        case "H":
+            return translation.arfc_high_standards;
+        case "P":
+            return translation.arfc_pass_oriented;
+        case "R":
+            return translation.arfc_reserve_buffer;
+        case "S":
+            return translation.arfc_sprint_deadline;
+        case "L":
+            return translation.arfc_facilitator;
+        case "B":
+            return translation.arfc_backuper;
+        case "D":
+            return translation.arfc_direct_efficiency;
+        case "T":
+            return translation.arfc_tactful_harmonious;
+        default:
+            return arfcCode;
+    }
+}
+
+export function convertTagToLocale(tag, score = 0) {
+    const translation = Translation.ui;
+
+    const suffix = (typeof score === 'number' ? score : Number(score)) >= 0 ? 'pos' : 'neg';
+
+    const key = `arfc_tag_${tag}_${suffix}`;
+    if (translation[key]) return translation[key];
+
+    // fallback: try generic pattern
+    const genericKey = `arfc_${tag}_${suffix}`;
+    if (translation[genericKey]) return translation[genericKey];
+
+    // last resort: return tag (or include sign)
+    return tag;
 }
