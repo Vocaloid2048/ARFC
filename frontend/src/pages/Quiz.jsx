@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import QuestionZH_HK from '../assets/question/zh_hk.json';
+import QuestionZH_HK from '../assets/lang/zh_hk.json';
 import { calculateResult } from '../utils/resultCalculation';
 
 const options = [
@@ -25,12 +25,58 @@ const randomizeArray = (array) => {
 export default function Quiz() {
   const navigate = useNavigate();
   const [answers, setAnswers] = useState({});
-  const [questions] = useState(randomizeArray(QuestionZH_HK));
+  const [questions] = useState(QuestionZH_HK.question);
   const questionRefs = useRef({});
+  const headerOffset = 96; // match page top padding (pt-24 -> 6rem -> 96px)
+  const progressRef = useRef(null);
 
   const handleSelect = (questionId, value) => {
     setAnswers(prev => ({ ...prev, [questionId]: value }));
+
+    // smart auto-scroll: find next unanswered after current index
+    const idx = questions.findIndex(q => q.id === questionId);
+    let targetEl = null;
+
+    // search forward for next unanswered
+    for (let i = idx + 1; i < questions.length; i++) {
+      if (answers[questions[i].id] === undefined) {
+        targetEl = questionRefs.current[questions[i].id];
+        break;
+      }
+    }
+
+    // if none forward, search from start
+    if (!targetEl) {
+      for (let i = 0; i < questions.length; i++) {
+        if (answers[questions[i].id] === undefined) {
+          targetEl = questionRefs.current[questions[i].id];
+          break;
+        }
+      }
+    }
+
+    // if still none -> scroll to progress area
+    setTimeout(() => {
+      if (targetEl) {
+        const rect = targetEl.getBoundingClientRect();
+        const top = rect.top + window.scrollY - headerOffset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      } else if (progressRef.current) {
+        const rect = progressRef.current.getBoundingClientRect();
+        const top = rect.top + window.scrollY - headerOffset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    }, 120);
   };
+  
+  useEffect(() => {
+    // Fill the previous answers if user navigates back to quiz from result page
+    const savedAnswers = localStorage.getItem('arfc_answers');
+    if (savedAnswers) {
+      //setAnswers(JSON.parse(savedAnswers));
+    }
+
+  }, []);
 
   const isAllAnswered = questions.every(q => answers[q.id] !== undefined);
 
@@ -39,22 +85,23 @@ export default function Quiz() {
       // Calculate results and store in localStorage for the result page to read
       const result = calculateResult(answers);
       localStorage.setItem('arfc_result', JSON.stringify(result));
+      //localStorage.setItem('arfc_answers', JSON.stringify(answers));
 
       // Navigate to the result page
       navigate('/result');
     } else {
       const firstUnanswered = questions.find(q => answers[q.id] === undefined);
       if (firstUnanswered && questionRefs.current[firstUnanswered.id]) {
-        questionRefs.current[firstUnanswered.id].scrollIntoView({
-          behavior: 'smooth',
-          block: 'center'
-        });
+        const el = questionRefs.current[firstUnanswered.id];
+        const rect = el.getBoundingClientRect();
+        const top = rect.top + window.scrollY - headerOffset;
+        window.scrollTo({ top, behavior: 'smooth' });
       }
     }
   };
 
   return (
-    <div className="min-h-screen bg-[var(--page-bg)] pt-24 pb-12">
+    <div className="min-h-screen pt-24 pb-12">
       <div className="max-w-4xl mx-auto px-4">
         {/* Title Section */}
         <div className="text-center mb-16">
@@ -66,7 +113,7 @@ export default function Quiz() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
           <div className="bg-slate-900/40 border border-[#80A1BA]/30 rounded-2xl p-6 relative overflow-hidden group">
             <div className="absolute top-0 left-0 w-1.5 h-full bg-[#80A1BA]"></div>
-            <span className="bg-[#80A1BA] text-[var(--page-bg)] text-xs font-bold px-3 py-1 rounded-full mb-4 inline-block">第 1 步</span>
+            <span className="bg-[#80A1BA] text-[var(--text-inverse)] text-xs font-bold px-3 py-1 rounded-full mb-4 inline-block">第 1 步</span>
             <h3 className="text-xl font-bold text-slate-100 mb-3">完成測試</h3>
             <p className="text-slate-400 text-sm leading-relaxed">
               誠實地回答問題，避免刻意隱瞞或歪曲，以此探尋你實際的人格類型。
@@ -75,7 +122,7 @@ export default function Quiz() {
 
           <div className="bg-slate-900/40 border border-[#B4DEBD]/30 rounded-2xl p-6 relative overflow-hidden group">
             <div className="absolute top-0 left-0 w-1.5 h-full bg-[#B4DEBD]"></div>
-            <span className="bg-[#B4DEBD] text-[var(--page-bg)] text-xs font-bold px-3 py-1 rounded-full mb-4 inline-block">第 2 步</span>
+            <span className="bg-[#B4DEBD] text-[var(--text-inverse)] text-xs font-bold px-3 py-1 rounded-full mb-4 inline-block">第 2 步</span>
             <h3 className="text-xl font-bold text-slate-100 mb-3">查看詳細結果</h3>
             <p className="text-slate-400 text-sm leading-relaxed">
               洞悉你獨具特色的人格類型是如何影響你在團隊中的行為模式與合作風格。
@@ -84,7 +131,7 @@ export default function Quiz() {
 
           <div className="bg-slate-900/40 border border-[#FFF7DD]/30 rounded-2xl p-6 relative overflow-hidden group">
             <div className="absolute top-0 left-0 w-1.5 h-full bg-[#FFF7DD]"></div>
-            <span className="bg-[#FFF7DD] text-[var(--page-bg)] text-xs font-bold px-3 py-1 rounded-full mb-4 inline-block">第 3 步</span>
+            <span className="bg-[#FFF7DD] text-[var(--text-inverse)] text-xs font-bold px-3 py-1 rounded-full mb-4 inline-block">第 3 步</span>
             <h3 className="text-xl font-bold text-slate-100 mb-3">找到合適定位</h3>
             <p className="text-slate-400 text-sm leading-relaxed">
               憑藉專屬的人格報告，在團隊中發揮所長，找到最適合你的角色定位。
@@ -155,7 +202,7 @@ export default function Quiz() {
         </div>
 
         { /* Progress Bar (Mock) */ }
-        <div className="mb-8">
+        <div className="mb-8" ref={progressRef}>
           <div className="flex justify-between text-slate-400 text-sm mb-2">
             <span>測試進度</span>
             <span>{Object.keys(answers).length} / {questions.length}</span>
