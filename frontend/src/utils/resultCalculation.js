@@ -9,6 +9,7 @@ export function calculateResult(answers) {
         C: 0.0  // Communication
     };
 
+    // Initialize tag weights for tag recommendation
     const tagWeights = {
         night: 0, 
         format: 0, 
@@ -22,7 +23,6 @@ export function calculateResult(answers) {
         introvert: 0
     };
 
-    // Tally raw sums and counts per category for normalization
     const counts = { A: 0, R: 0, F: 0, C: 0 };
 
     // iterate through question metadata and aggregate
@@ -34,7 +34,7 @@ export function calculateResult(answers) {
         // accumulate category score
         const cat = q.category;
         if (scores[cat] !== undefined) {
-            scores[cat] += ans;
+            scores[cat] += q.isLeft ? -ans : ans;
             counts[cat] += 1;
         }
 
@@ -57,21 +57,33 @@ export function calculateResult(answers) {
 
     // Derive a 4-letter code from A,R,F,C sign (positive -> one letter, negative/zero -> alternative)
     // Mapping can be adjusted; current letters chosen as placeholders matching earlier examples:
-    // A: positive -> 'H', negative -> 'P'
-    // R: positive -> 'R', negative -> 'S'
-    // F: positive -> 'L', negative -> 'B'
-    // C: positive -> 'D', negative -> 'T'
-    // Example: all positive => 'HRLD', all negative => 'PSBT'
-    const suggestedTags = (() => {
+    // A: negative -> 'H', positive -> 'P'
+    // R: negative -> 'R', positive -> 'S'
+    // F: negative -> 'L', positive -> 'B'
+    // C: negative -> 'D', positive -> 'T'
+    // Example: all negative => 'HRLD', all positive => 'PSBT'
+    const suggestedARFC = (() => {
         const map = {
-            A: { pos: 'H', neg: 'P' },
-            R: { pos: 'R', neg: 'S' },
-            F: { pos: 'L', neg: 'B' },
-            C: { pos: 'D', neg: 'T' }
+            A: { pos: 'P', neg: 'H' },
+            R: { pos: 'S', neg: 'R' },
+            F: { pos: 'B', neg: 'L' },
+            C: { pos: 'T', neg: 'D' }
         };
         const order = ['A', 'R', 'F', 'C'];
         return order.map(k => (scores[k] > 0 ? map[k].pos : map[k].neg)).join('');
     })();
+    
+    const bestARFCPart = {"dimension": "", "part": ""};
+    // Determine which dimension has the highest absolute score and its corresponding part
+    let maxAbsScore = -1;
+    for (const k of Object.keys(scores)) {
+        const absScore = Math.abs(scores[k]);
+        if (absScore > maxAbsScore) {
+            maxAbsScore = absScore;
+            bestARFCPart.dimension = k;
+            bestARFCPart.part = scores[k] > 0 ? 'positive' : 'negative';
+        }
+    }
 
 
     // Prepare recommended roles: sort tags by absolute value descending (strength)
@@ -80,5 +92,5 @@ export function calculateResult(answers) {
         .sort((a, b) => Math.abs(b.score) - Math.abs(a.score))
         .slice(0, 3);
 
-    return { scores, tagWeights, tagRecommend, suggestedTags };
+    return { scores, tagWeights, tagRecommend, suggestedARFC, bestARFCPart};
 }
