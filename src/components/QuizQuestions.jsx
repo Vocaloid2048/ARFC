@@ -1,4 +1,4 @@
-import { locale } from "../utils/utilTools";
+import { locale } from "../utils/utilTool";
 
 const options = [
   { value: 3, size: "w-12 h-12 md:w-16 md:h-16", border: "border-[3px] border-[#33d282]", bg: "bg-[#33d282]", hover: "hover:bg-[#33d282]/20" },

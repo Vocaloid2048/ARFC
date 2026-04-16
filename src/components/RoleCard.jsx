@@ -1,5 +1,5 @@
 import React from 'react';
-import { locale, convertTagToLocale, getPercentData, convertARFCToLocale, convertARFCToFancyText } from '../utils/utilTools';
+import { locale, convertTagToLocale, getPercentData, convertARFCToLocale, convertARFCToFancyText } from '../utils/utilTool';
 import TraitBar from './TraitBar';
 import { ThumbsUp, LucideFileExclamationPoint } from 'lucide-react';
 

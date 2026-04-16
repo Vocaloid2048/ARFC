@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Star, Globe, Menu, Info, ArrowBigRightDash, FileIcon } from "lucide-react";
 import GitHubIcon from "../assets/github_icon.svg?react";
 import { Link } from "react-router-dom";
-import { locale, getCurrentLang, setCurrentLang, AVAILABLE_LANGS } from "../utils/utilTools";
+import { locale, getCurrentLang, setCurrentLang, AVAILABLE_LANGS } from "../utils/utilTool";
 
 function GitHubButton({ repo = "vocaloid2048/ARFC" }) {
   const [stars, setStars] = useState(null);
