@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Translation from '../assets/lang/zh_hk.json';
 import RoleData from '../assets/data/role_data.json';
 import { LucideFileExclamationPoint, ThumbsUp } from 'lucide-react';
 import ArfcButton from '../components/ArfcButton';
-import { convertARFCToLocale, convertTagToLocale, getPercentData, shareResult } from '../utils/resultCalculation';
+import { convertARFCToLocale, convertTagToLocale, getPercentData, shareResult, locale } from '../utils/UtilTools';
 import ArfcDescBox from '../components/ArfcDescBox';
+import TraitBar from '../components/TraitBar';
 
 export default function Result() {
+    
     const navigate = useNavigate();
     const [result, setResult] = useState(null);
-    const translation = Translation.ui;
 
     // Ensure page is at top when Result mounts
     useEffect(() => {
@@ -19,26 +19,30 @@ export default function Result() {
 
     useEffect(() => {
         const saved = localStorage.getItem('arfc_result');
+        console.log('Fetched saved result from localStorage:', saved);
         if (saved) {
             setResult(JSON.parse(saved));
-        } else {
-            // Mock data for testing if visited directly or refreshing
-            setResult({
-                "scores": { "A": -0.361, "R": 0.033, "F": -0.2, "C": -0.273 },
-                "tagWeights": { "night": 4, "format": -12, "altruist": 2, "calm": -22, "idea": -3, "buffer": -9, "observer": 6, "efficiency": 1, "emotional": -5, "introvert": -11 },
-                "tagRecommend": [{ "tag": "calm", "score": -22 }, { "tag": "format", "score": -12 }, { "tag": "introvert", "score": -11 }],
-                "suggestedARFC": "PRBT",
-                "bestARFCPart": { "part": "H", "dimension": "A", "percentage": 0.361 * 0.5 + 0.5 },
-            },);
-        }
+        } 
     }, []);
+
+    console.log('Result data:', result);
 
     if (!result) return <div className="min-h-screen flex justify-center items-center text-white">載入中...</div>;
 
     const { scores, suggestedARFC, bestARFCPart } = result;
     const tagRecommend = result.tagRecommend || [];
     const roleInfo = RoleData.find(r => r.tag === suggestedARFC) || {};
-    const roleLocaleInfo = Translation.role.find(r => r.id === roleInfo.id);
+    const roleLocaleInfo = {
+        animal_name: locale(`role.${roleInfo.animal}.animal_name`),
+        desc: locale(`role.${roleInfo.animal}.desc`),
+        short: locale(`role.${roleInfo.animal}.short`),
+        self_intro: locale(`role.${roleInfo.animal}.self_intro`),
+        talent_title: locale(`role.${roleInfo.animal}.talent_title`),
+        talent_desc: locale(`role.${roleInfo.animal}.talent_desc`),
+        pitfall_title: locale(`role.${roleInfo.animal}.pitfall_title`),
+        pitfall_desc: locale(`role.${roleInfo.animal}.pitfall_desc`),
+        tag_name: locale(`role.${roleInfo.animal}.tag.name`),
+    }
 
     const cPrimary = roleInfo.colors?.[0] || '#2ae19e';
     const cSecondary = roleInfo.colors?.[1] || '#8b5cf6';
@@ -65,10 +69,10 @@ export default function Result() {
                     {/* Left Text Content */}
                     <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left">
                         <p className="text-m font-bold tracking-[0.3em] uppercase mb-4" style={{ color: cHighlight }}>
-                            你的 ARFC 定位是...
+                            {locale('ui.result.title')}
                         </p>
                         <h1 className="text-6xl md:text-7xl font-black mb-4 tracking-tighter text-white drop-shadow-md">
-                            {roleLocaleInfo?.tagName}
+                            {roleLocaleInfo?.tag_name}
                         </h1>
                         {/* tagName badge (主顯示) */}
                         <div className="flex items-center gap-3 mb-4">
@@ -76,7 +80,7 @@ export default function Result() {
                                 className="text-2xl px-3 py-1 text-white font-semibold uppercase tracking-wider"
                                 aria-hidden="false"
                             >
-                            代表角色：{roleLocaleInfo?.animal_name || '未知角色'}
+                            {locale('ui.result.role').replace('%1', roleLocaleInfo?.animal_name || locale('ui.result.undefined'))}
                             </span>
                         </div>
                         <div
@@ -87,20 +91,20 @@ export default function Result() {
                         </div>
 
                         <p className="text-xl md:text-2xl font-medium text-slate-300 italic border-l-4 pl-6 mb-12 py-2" style={{ borderColor: cHighlight }}>
-                            "{roleLocaleInfo?.short || '未下定義'}"
+                            "{roleLocaleInfo?.short || locale('ui.result.undefined')}"
                         </p>
 
                         <div className="flex flex-wrap justify-center md:justify-start gap-4 w-full">
                             <ArfcButton
                                 onClick={() => navigate('/')}
-                                text="重新測試"
+                                text={locale('ui.result.retest_button')}
                                 bgColor="var(--color-C-dark)"
                                 className="py-4 px-10 tracking-widest text-sm backdrop-blur-sm"
                                 style={{ boxShadow: `0 0 8px ${cBgDeco}25` }}
                             />
                             <ArfcButton
                                 onClick={() => shareResult(result, roleInfo, roleLocaleInfo)}
-                                text="分享結果"
+                                text={locale('ui.result.share_button')}
                                 bgColor="var(--color-F-dark)"
                                 className="py-4 px-10 tracking-widest text-sm backdrop-blur-sm"
                                 style={{ boxShadow: `0 0 8px ${cBgDeco}25` }}
@@ -135,10 +139,10 @@ export default function Result() {
                     <div className="p-6 rounded-3xl relative overflow-hidden backdrop-blur-md" style={{ backgroundColor: `${cBgDeco}40`, border: `1px solid ${cPrimary}30` }}>
                         <div className="absolute -right-4 -top-4 w-40 h-40 rounded-full filter blur-[60px] opacity-40 pointer-events-none" style={{ backgroundColor: cPrimary }}></div>
                         <h3 className="text-lg font-bold tracking-[0.2em] text-slate-400 mb-4 uppercase" style={{ color: cHighlight }}>
-                            角色定位解讀
+                            {locale("ui.result.desc")}
                         </h3>
                         <p className="text-2xl font-black text-white leading-snug relative z-10">
-                            <span style={{ color: "#FFFFFF"}}>{roleLocaleInfo?.desc}</span>
+                            <span style={{ color: "#FFFFFF"}}>{roleLocaleInfo?.desc || locale('ui.result.undefined')}</span>
                         </p>
 
                     </div>
@@ -147,7 +151,7 @@ export default function Result() {
                 {/* Traits Section */}
                 <section>
                     <div className="mb-16 md:mb-24 flex flex-col items-center text-center">
-                        <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">性格特質分析</h2>
+                        <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">{locale('ui.result.traits_title')}</h2>
                         <div className="w-24 h-1.5 rounded-full shadow-lg" style={{ backgroundColor: cPrimary, boxShadow: `0 0 15px ${cPrimary}80` }}></div>
                     </div>
 
@@ -155,33 +159,33 @@ export default function Result() {
                         {/* Dimension Bars */}
                         <div className="flex-1 flex flex-col gap-12">
                             <TraitBar
-                                labelLeft={translation.arfc_high_standards}
-                                labelRight={translation.arfc_pass_oriented}
-                                dim={translation.arfc_attitude_target}
+                                labelLeft={locale('ui.arfc.part.high_standards')}
+                                labelRight={locale('ui.arfc.part.pass_oriented')}
+                                dim={locale('ui.arfc.dim.attitude_target')}
                                 dimTag="A"
                                 glowColor={roleInfo.colors?.[2] || cHighlight}
                                 percentData={getPercentData(scores.A, 'A')}
                             />
                             <TraitBar
-                                labelLeft={translation.arfc_reserve_buffer}
-                                labelRight={translation.arfc_sprint_deadline}
-                                dim={translation.arfc_rythm_of_work}
+                                labelLeft={locale('ui.arfc.part.reserve_buffer')}
+                                labelRight={locale('ui.arfc.part.sprint_deadline')}
+                                dim={locale('ui.arfc.dim.rythm_of_work')}
                                 dimTag="R"
                                 glowColor={roleInfo.colors?.[2] || cHighlight}
                                 percentData={getPercentData(scores.R, 'R')}
                             />
                             <TraitBar
-                                labelLeft={translation.arfc_facilitator}
-                                labelRight={translation.arfc_backuper}
-                                dim={translation.arfc_function}
+                                labelLeft={locale('ui.arfc.part.facilitator')}
+                                labelRight={locale('ui.arfc.part.backuper')}
+                                dim={locale('ui.arfc.dim.function')}
                                 dimTag="F"
                                 glowColor={roleInfo.colors?.[2] || cHighlight}
                                 percentData={getPercentData(scores.F, 'F')}
                             />
                             <TraitBar
-                                labelLeft={translation.arfc_direct_efficiency}
-                                labelRight={translation.arfc_tactful_harmonious}
-                                dim={translation.arfc_communication}
+                                labelLeft={locale('ui.arfc.part.direct_efficiency')}
+                                labelRight={locale('ui.arfc.part.tactful_harmonious')}
+                                dim={locale('ui.arfc.dim.communication')}
                                 dimTag="C"
                                 glowColor={roleInfo.colors?.[2] || cHighlight}
                                 percentData={getPercentData(scores.C, 'C')}
@@ -192,9 +196,9 @@ export default function Result() {
                         <div className="lg:w-1/3 flex flex-col justify-center">
                             <div className="p-6 rounded-3xl relative overflow-hidden backdrop-blur-md" style={{ backgroundColor: `${cBgDeco}40`, border: `1px solid ${cPrimary}30` }}>
                                 <div className="absolute -right-4 -top-4 w-40 h-40 rounded-full filter blur-[60px] opacity-40 pointer-events-none" style={{ backgroundColor: cPrimary }}></div>
-                                <h3 className="text-sm font-bold tracking-[0.2em] text-slate-400 mb-4 uppercase">最突出的特質</h3>
+                                <h3 className="text-sm font-bold tracking-[0.2em] text-slate-400 mb-4 uppercase">{locale('ui.result.best_category')}</h3>
                                 <p className="text-4xl font-black text-white leading-snug relative z-10">
-                                    <span style={{ color: cHighlight, textShadow: `0 0 10px ${cHighlight}80` }}>{convertARFCToLocale(bestARFCPart?.part || "均衡表現")} ({bestARFCPart?.percentage ? (bestARFCPart.percentage * 50 + 50).toFixed(0) + '%' : "均衡表現"})</span>
+                                    <span style={{ color: cHighlight, textShadow: `0 0 10px ${cHighlight}80` }}>{convertARFCToLocale(bestARFCPart?.part || locale('ui.result.undefined'))} ({bestARFCPart?.percentage ? (bestARFCPart.percentage * 50 + 50).toFixed(0) + '%' : locale('ui.result.undefined')})</span>
                                 </p>
 
                                 {/* 推薦標籤（展示前三個） */}
@@ -211,7 +215,7 @@ export default function Result() {
                                     <div className="mt-6 flex flex-col gap-4">
                                         <ArfcButton
                                             onClick={() => shareResult(result, roleInfo, roleLocaleInfo)}
-                                            text="分享結果"
+                                            text={locale('ui.result.share_button')}
                                             bgColor="var(--color-F-dark)"
                                             className="px-6 py-3"
                                             style={{ border: '1px solid rgba(255,255,255,0.1)' }}
@@ -219,7 +223,7 @@ export default function Result() {
 
                                         <ArfcButton
                                             disabled
-                                            text="下載角色卡"
+                                            text={locale('ui.result.download_card_button')}
                                             bgColor="var(--color-A-dark)"
                                             className="px-6 py-3 opacity-80"
                                             style={{ border: '1px solid rgba(255,255,255,0.1)' }}
@@ -249,8 +253,8 @@ export default function Result() {
                                     highlightColor={"var(--strength)"}
                                     darkColor={"var(--strength-dark)"}
 
-                                    title={talentTitle || '優勢天賦'}
-                                    description={talentDesc || '暫無優勢描述'}
+                                    title={talentTitle || locale('ui.result.talent_title')}
+                                    description={talentDesc || locale('ui.result.talent_desc')}
                                 />
 
                                 {/* Weaknesses box */}
@@ -258,8 +262,8 @@ export default function Result() {
                                     icon={<LucideFileExclamationPoint size={24} />}
                                     highlightColor={"var(--weakness)"}
                                     darkColor={"var(--weakness-dark)"}
-                                    title={pitfallTitle || '發展盲區'}
-                                    description={pitfallDesc || '暫無盲區描述'}
+                                    title={pitfallTitle || locale('ui.result.pitfall_title')}
+                                    description={pitfallDesc || locale('ui.result.pitfall_desc')}
                                 />
                             </div>
                         );
@@ -267,68 +271,6 @@ export default function Result() {
                 </section>
 
             </main>
-        </div>
-    );
-}
-
-// Subcomponents: Dark Mode
-
-function TraitBar({ labelLeft, labelRight, dim, dimTag, glowColor, percentData }) {
-    const { raw, score, isLeft } = percentData;
-    const dominantLabel = isLeft ? labelLeft : labelRight;
-    const trackColor = `var(--color-${dimTag})`;
-
-    return (
-        <div className="w-full relative mt-8 mb-6">
-            {/* Floating Label (Percentage + Dominant Trait) */}
-            <div
-                className="absolute -top-8 text-base font-bold transition-all duration-1000 ease-out whitespace-nowrap z-10"
-                style={{
-                    left: `${raw}%`,
-                    transform: 'translateX(-50%)',
-                    color: trackColor,
-                    textShadow: `0 0 10px ${trackColor}40`
-                }}
-            >
-                {score}% {dominantLabel}
-            </div>
-
-            {/* Track (Solid Color) */}
-            <div
-                className="relative w-full h-3 rounded-full mb-3"
-                style={{ backgroundColor: trackColor }}
-                role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={raw} aria-label={dim}
-            >
-                {/* Thumb indicator on the track */}
-                <div
-                    className="absolute top-1/2 w-5 h-5 rounded-full bg-[#000000]/30 transition-all duration-1000 ease-out"
-                    style={{
-                        border: `4px solid white`,
-                        left: `${raw}%`,
-                        transform: 'translate(-50%, -50%)',
-                        boxShadow: `0 0 8px rgba(0,0,0,0.5)`
-                    }}
-                >
-                    <span className="sr-only">{score}% {dominantLabel}</span>
-                </div>
-            </div>
-
-            {/* Bottom Labels for ends of axis (larger for emphasis) */}
-            <div className="flex justify-between text-base md:text-lg font-semibold text-slate-400">
-                <span className={`${isLeft ? 'text-slate-200 font-bold' : ''}`}>{labelLeft}</span>
-                <span className={`${!isLeft ? 'text-slate-200 font-bold' : ''}`}>{labelRight}</span>
-            </div>
-        </div>
-    );
-}
-
-function Item({ title, desc }) {
-    return (
-        <div className="group">
-            <div>
-                <h4 className="text-ltext-white mb-2 transition-colors">{title}</h4>
-                <p className="text-slate-400 leading-relaxed text-lg">{desc}</p>
-            </div>
         </div>
     );
 }

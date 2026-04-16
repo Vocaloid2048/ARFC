@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import QuestionZH_HK from '../assets/lang/zh_hk.json';
-import { calculateResult } from '../utils/resultCalculation';
+import questionsMeta from '../assets/data/question_data.json';
+import { calculateResult } from '../utils/CalculateResult';
 import QuizStepDesc from '../components/QuizStepDesc';
 import QuizQuestions from '../components/QuizQuestions';
 import ArfcButton from '../components/ArfcButton';
+import { locale } from '../utils/UtilTools';
 
 const randomizeArray = (array) => {
   const shuffled = [...array];
@@ -18,7 +19,12 @@ const randomizeArray = (array) => {
 export default function Quiz() {
   const navigate = useNavigate();
   const [answers, setAnswers] = useState({});
-  const [questions] = useState(randomizeArray(QuestionZH_HK.question));
+  const [questions] = useState(randomizeArray(
+    questionsMeta.map(q => ({
+      ...q,
+      text: locale(`question.${q.id}`)
+    }))
+  ));
   const questionRefs = useRef({});
   const headerOffset = 96; // match page top padding (pt-24 -> 6rem -> 96px)
   const progressRef = useRef(null);
@@ -98,7 +104,7 @@ export default function Quiz() {
       <div className="max-w-4xl mx-auto px-4">
         {/* Title Section */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-100 mb-4">免費性格測試</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-slate-100 mb-4">{locale('ui.home.project_name.part2')}</h1>
           <p className="text-xl text-slate-400 font-medium tracking-wide">ARFC Type Indicator</p>
         </div>
 
@@ -106,22 +112,22 @@ export default function Quiz() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
           <QuizStepDesc
             index={1}
-            title="完成測試"
-            desc="誠實地回答問題，避免刻意隱瞞或歪曲，以此探尋你實際的人格類型。"
+            title={locale('ui.quiz.step1.title')}
+            desc={locale('ui.quiz.step1.desc')}
             color="#80A1BA"
           />
 
           <QuizStepDesc
             index={2}
-            title="查看詳細結果"
-            desc="洞悉你獨具特色的人格類型是如何影響你在團隊中的行為模式與合作風格。"
+            title={locale('ui.quiz.step2.title')}
+            desc={locale('ui.quiz.step2.desc')}
             color="#B4DEBD"
           />
 
           <QuizStepDesc
             index={3}
-            title="找到合適定位"
-            desc="憑藉專屬的人格報告，在團隊中發揮所長，找到最適合你的角色定位。"
+            title={locale('ui.quiz.step3.title')}
+            desc={locale('ui.quiz.step3.desc')}
             color="#FFF7DD"
           />
         </div>
@@ -138,7 +144,7 @@ export default function Quiz() {
         { /* Progress Bar (Mock) */}
         <div className="mb-8" ref={progressRef}>
           <div className="flex justify-between text-slate-400 text-sm mb-2">
-            <span>測試進度</span>
+            <span>{locale('ui.quiz.progress.title')}</span>
             <span>{Object.keys(answers).length} / {questions.length}</span>
           </div>
           <div className="w-full bg-slate-700 rounded-full h-2">
@@ -150,12 +156,11 @@ export default function Quiz() {
         </div>
 
         <div className="mt-20 text-center flex flex-col items-center gap-6">
-          <p className="text-slate-500 text-sm max-w-md">
-            備註：本測試僅供參考，當中評級未經學術研究認證<br />我們不會收集任何個人敏感資料<br />所有測試結果僅儲存於您目前的瀏覽器本地緩存
+          <p className="text-slate-500 text-sm max-w-md" dangerouslySetInnerHTML={{ __html: locale('ui.quiz.disclamer') }}>
           </p>
           <ArfcButton
             onClick={handleResultClick}
-            text="看測試結果"
+            text={locale('ui.quiz.submit_button')}
             bgColor={isAllAnswered ? 'var(--color-F-dark)' : '#334155'}
           />
         </div>

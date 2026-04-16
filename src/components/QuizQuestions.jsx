@@ -1,3 +1,5 @@
+import { locale } from "../utils/UtilTools";
+
 const options = [
   { value: 3, size: "w-12 h-12 md:w-16 md:h-16", border: "border-[3px] border-[#33d282]", bg: "bg-[#33d282]", hover: "hover:bg-[#33d282]/20" },
   { value: 2, size: "w-10 h-10 md:w-12 md:h-12", border: "border-[2px] border-[#33d282]", bg: "bg-[#33d282]", hover: "hover:bg-[#33d282]/20" },
@@ -22,13 +24,13 @@ export default function QuizQuestions({ questions, questionRef, answers, onSelec
 
                 {/* Mobile Labels (top) */}
                 <div className="flex sm:hidden justify-between w-full px-4 mb-4 text-sm font-bold tracking-wider">
-                    <span className="text-[#33d282]">同意</span>
-                    <span className="text-[#7451eb]">不同意</span>
+                    <span className="text-[#33d282]">{locale("ui.quiz.agree")}</span>
+                    <span className="text-[#7451eb]">{locale("ui.quiz.disagree")}</span>
                 </div>
 
                 {/* Options */}
                 <div className="flex items-center justify-between w-full sm:w-11/12 gap-2">
-                    <span className="text-[#33d282] font-bold text-lg hidden sm:block whitespace-nowrap mr-4">同意</span>
+                    <span className="text-[#33d282] font-bold text-lg hidden sm:block whitespace-nowrap mr-4">{locale("ui.quiz.agree")}</span>
 
                     <div className="flex justify-between items-center w-full px-2 sm:px-0">
                         {options.map((opt, idx) => {
@@ -62,7 +64,7 @@ export default function QuizQuestions({ questions, questionRef, answers, onSelec
                         })}
                     </div>
 
-                    <span className="text-[#7451eb] font-bold text-lg hidden sm:block whitespace-nowrap ml-4">不同意</span>
+                    <span className="text-[#7451eb] font-bold text-lg hidden sm:block whitespace-nowrap ml-4">{locale("ui.quiz.disagree")}</span>
                 </div>
             </div>
         ))

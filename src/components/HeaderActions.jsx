@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Star, Globe, Menu, Info, ArrowBigRightDash } from "lucide-react";
 import GitHubIcon from "../assets/github_icon.svg?react";
 import { Link } from "react-router-dom";
+import { locale, getCurrentLang, setCurrentLang, AVAILABLE_LANGS } from "../utils/UtilTools";
 
 function GitHubButton({ repo = "vocaloid2048/ARFC" }) {
   const [stars, setStars] = useState(null);
@@ -38,7 +39,7 @@ function GitHubButton({ repo = "vocaloid2048/ARFC" }) {
         <div className="text-sm text-slate-100 flex items-center">
           <Star className="w-4 h-4 text-yellow-500" />
           <span className="ml-1">
-            {stars !== null ? stars.toLocaleString() : "載入中"}
+            {stars !== null ? stars.toLocaleString() : locale("ui.nav.loading")}
           </span>
         </div>
       </a>
@@ -48,6 +49,8 @@ function GitHubButton({ repo = "vocaloid2048/ARFC" }) {
 
 export default function HeaderActions() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+  const [curLang, setCurLang] = useState(getCurrentLang());
 
   return (
     <div className="relative flex items-center">
@@ -55,16 +58,30 @@ export default function HeaderActions() {
       <div className="hidden md:flex items-center space-x-3">
         <GitHubButton />
         <div className="relative">
-          <button className="inline-flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition">
+          <button onClick={() => setLangOpen(v => !v)} className="inline-flex items-center gap-2 px-3 py-2 rounded-full hover:bg-slate-800 transition">
             <Globe className="w-4 h-4 text-slate-100" />
-            <span className="text-sm text-slate-100">繁體中文</span>
+            <span className="text-sm text-slate-100">{AVAILABLE_LANGS[curLang] || '語言'}</span>
           </button>
+
+          {langOpen && (
+            <div className="absolute right-0 mt-2 w-40 bg-slate-900 border border-slate-800 rounded-md shadow-lg overflow-hidden">
+              {Object.entries(AVAILABLE_LANGS).map(([code, label]) => (
+                <button
+                  key={code}
+                  onClick={() => { setCurrentLang(code); setCurLang(code); setLangOpen(false); }}
+                  className="w-full text-left px-4 py-2 hover:bg-slate-700"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="relative" onClick={() => window.location.href = "/about"}>
-          <button className="inline-flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800 transition">
+          <button className="inline-flex items-center gap-2 px-3 py-2 rounded-full hover:bg-slate-800 transition">
             <Info className="w-4 h-4 text-slate-100" />
-            <span className="text-sm text-slate-100">關於專案</span>
+            <span className="text-sm text-slate-100">{locale("ui.nav.about")}</span>
           </button>
         </div>
 
@@ -77,14 +94,13 @@ export default function HeaderActions() {
             boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
           }}
         >
-          立即測試
+          {locale("ui.nav.start_button")}
         </Link>
       </div>
 
       {/* Mobile / narrow screens: show a compact menu button that opens a droplist */}
       <div className="md:hidden flex items-center">
         <button
-          aria-label="更多選項"
           className="inline-flex items-center justify-center w-10 h-10 rounded-full hover:bg-slate-100 transition"
           onClick={() => setMobileOpen((v) => !v)}
         >
@@ -115,18 +131,22 @@ export default function HeaderActions() {
                 </div>
               </a>
 
-              <button className="w-full text-left px-4 py-3 hover:bg-slate-600 flex items-center gap-3">
-                <Globe className="w-4 h-4 text-slate-100" />
-                <span className="text-sm text-slate-100">繁體中文</span>
-              </button>
+              <div>
+                {Object.entries(AVAILABLE_LANGS).map(([code, label]) => (
+                  <button key={code} onClick={() => setCurrentLang(code)} className="w-full text-left px-4 py-3 hover:bg-slate-600 flex items-center gap-3">
+                    <Globe className="w-4 h-4 text-slate-100" />
+                    <span className="text-sm text-slate-100">{label}</span>
+                  </button>
+                ))}
+              </div>
 
                 <button className="w-full text-left px-4 py-3 hover:bg-slate-600 flex items-center gap-3" onClick={() => window.location.href = "/about"}>
                   <Info className="w-4 h-4 text-slate-100" />
-                  <span className="text-sm text-slate-100">關於專案</span>
+                  <span className="text-sm text-slate-100">{locale("ui.nav.about")}</span>
                 </button>
                 <button className="w-full text-left px-4 py-3 flex items-center gap-3 hover:bg-[#fa7d81]" onClick={() => window.location.href = "/quiz"}>
                   <ArrowBigRightDash className="w-4 h-4 text-slate-100" />
-                  <span className="text-sm text-slate-100">立即測試</span>
+                  <span className="text-sm text-slate-100">{locale("ui.nav.start_button")}</span>
                 </button>
 
             </div>
@@ -156,5 +176,5 @@ function GitHubStarCount({ repo = "vocaloid2048/ARFC" }) {
     };
   }, [repo]);
 
-  return <>{stars !== null ? stars.toLocaleString() : "載入中"}</>;
+  return <>{stars !== null ? stars.toLocaleString() : locale("ui.nav.loading")}</>;
 }
