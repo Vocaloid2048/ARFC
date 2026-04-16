@@ -16,7 +16,7 @@ function App() {
             <div className="flex justify-between h-16">
               <div className="flex items-center">
                 <Link to="/" className="text-xl font-extrabold tracking-tight flex items-center gap-2 text-white">
-                  <img src="./src/assets/arfc_icon.png" alt="Logo" className="w-6 h-6" />
+                  <img src="/arfc_icon.png" alt="Logo" className="w-6 h-6" />
                   <span>ARFC</span>
                 </Link>
               </div>
