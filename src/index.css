@@ -55,3 +55,4 @@ body {
 .indicator-text-C { color: var(--color-C); }
 .indicator-text-C-dark { color: var(--color-C-dark); }
 .textauto{color: var(--text); mix-blend-mode: exclusion;}
+.hrefstyle {color: var(--text); text-decoration: underline; text-underline-offset: 2px;}

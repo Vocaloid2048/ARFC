@@ -5,6 +5,7 @@ import Quiz from './pages/Quiz';
 import Result from './pages/Result';
 import HeaderBar from './components/HeaderBar'
 import Footer from './components/Footer';
+import About from './pages/About';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/result" element={<Result />} />
+            <Route path="/about" element={<About />} />
           </Routes>
         </main>
         
