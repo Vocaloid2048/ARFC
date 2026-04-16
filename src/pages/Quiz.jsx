@@ -5,7 +5,7 @@ import { calculateResult } from '../utils/calculateResult';
 import QuizStepDesc from '../components/QuizStepDesc';
 import QuizQuestions from '../components/QuizQuestions';
 import ArfcButton from '../components/ArfcButton';
-import { locale } from '../utils/utilTools';
+import { locale } from '../utils/utilTool';
 
 const randomizeArray = (array) => {
   const shuffled = [...array];
