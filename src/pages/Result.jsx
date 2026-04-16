@@ -120,8 +120,17 @@ export default function Result() {
                             你的 ARFC 定位是...
                         </p>
                         <h1 className="text-6xl md:text-7xl font-black mb-4 tracking-tighter text-white drop-shadow-md">
-                            {roleLocaleInfo?.animal_name || '未知角色'}
+                            {roleLocaleInfo?.tagName}
                         </h1>
+                        {/* tagName badge (主顯示) */}
+                        <div className="flex items-center gap-3 mb-4">
+                            <span
+                                className="text-2xl px-3 py-1 text-white font-semibold uppercase tracking-wider"
+                                aria-hidden="false"
+                            >
+                            代表角色：{roleLocaleInfo?.animal_name || '未知角色'}
+                            </span>
+                        </div>
                         <div
                             className="inline-block text-slate-900 text-xl md:text-2xl textauto font-black tracking-[0.2em] px-8 py-2 rounded-full mb-8 shadow-lg"
                             style={{ backgroundColor: cPrimary, boxShadow: `0 0 20px ${cPrimary}40` }}
@@ -180,12 +189,6 @@ export default function Result() {
 
                         <blank className="block h-6"></blank>
 
-                        <h3 className="text-lg font-bold tracking-[0.2em] text-slate-400 mb-4 uppercase" style={{ color: cHighlight }}>
-                            個人介紹
-                        </h3>
-                        <p className="text-2xl font-black text-white leading-snug relative z-10">
-                            <span style={{ color: "#FFFFFF"}}>{roleLocaleInfo?.self_intro}</span>
-                        </p>
                     </div>
                 </div>
 
