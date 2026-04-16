@@ -22,7 +22,9 @@ export default function Result() {
         console.log('Fetched saved result from localStorage:', saved);
         if (saved) {
             setResult(JSON.parse(saved));
-        } 
+        } else {
+            navigate('/quiz');
+        }
     }, []);
 
     console.log('Result data:', result);

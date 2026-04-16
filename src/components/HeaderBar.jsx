@@ -47,7 +47,7 @@ function GitHubButton({ repo = "vocaloid2048/ARFC" }) {
   );
 }
 
-export default function HeaderActions() {
+export default function HeaderBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [curLang, setCurLang] = useState(getCurrentLang());
@@ -100,11 +100,28 @@ export default function HeaderActions() {
 
       {/* Mobile / narrow screens: show a compact menu button that opens a droplist */}
       <div className="md:hidden flex items-center">
+        <div className="mr-2 relative">
+          <button onClick={() => setLangOpen(v => !v)} className="inline-flex items-center gap-2 px-3 py-2 rounded-full hover:bg-slate-800 transition">
+            <Globe className="w-4 h-4 text-slate-100" />
+            <span className="text-sm text-slate-100">{AVAILABLE_LANGS[curLang] || '語言'}</span>
+          </button>
+
+          {langOpen && (
+            <div className="absolute right-0 mt-2 w-40 bg-slate-900 border border-slate-800 rounded-md shadow-lg overflow-hidden">
+              {Object.entries(AVAILABLE_LANGS).map(([code, label]) => (
+                <button key={code} onClick={() => { setCurrentLang(code); setCurLang(code); setLangOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-700">
+                  {label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
         <button
           className="inline-flex items-center justify-center w-10 h-10 rounded-full hover:bg-slate-100 transition"
           onClick={() => setMobileOpen((v) => !v)}
         >
-          <Menu className="w-5 h-5 text-slate-700" />
+          <Menu className="w-5 h-5 text-slate-300" />
         </button>
 
         {mobileOpen && (
@@ -131,14 +148,7 @@ export default function HeaderActions() {
                 </div>
               </a>
 
-              <div>
-                {Object.entries(AVAILABLE_LANGS).map(([code, label]) => (
-                  <button key={code} onClick={() => setCurrentLang(code)} className="w-full text-left px-4 py-3 hover:bg-slate-600 flex items-center gap-3">
-                    <Globe className="w-4 h-4 text-slate-100" />
-                    <span className="text-sm text-slate-100">{label}</span>
-                  </button>
-                ))}
-              </div>
+              {/* language options moved to the left of Menu button on mobile */}
 
                 <button className="w-full text-left px-4 py-3 hover:bg-slate-600 flex items-center gap-3" onClick={() => window.location.href = "/about"}>
                   <Info className="w-4 h-4 text-slate-100" />

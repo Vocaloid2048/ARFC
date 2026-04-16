@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import Quiz from './pages/Quiz';
 import Result from './pages/Result';
-import HeaderActions from './components/HeaderActions'
+import HeaderBar from './components/HeaderBar'
 import Footer from './components/Footer';
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
                   <span>ARFC</span>
                 </Link>
               </div>
-              <HeaderActions />
+              <HeaderBar />
             </div>
           </div>
         </nav>
