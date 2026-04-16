@@ -25,3 +25,5 @@ dist-ssr
 
 src/assets/reason
 /.vite
+
+docker-compose.yml

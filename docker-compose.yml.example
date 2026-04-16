@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  arfc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: arfc:latest
+    ports:
+      - "443:443"
+    restart: unless-stopped
