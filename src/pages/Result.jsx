@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Translation from '../assets/lang/zh_hk.json';
-import RoleData from '../assets/role.json';
+import RoleData from '../assets/data/role_data.json';
 import { LucideFileExclamationPoint, ThumbsUp } from 'lucide-react';
 import { arfcMap, convertARFCToLocale, convertTagToLocale } from '../utils/resultCalculation';
 

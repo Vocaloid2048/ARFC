@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Quiz from './pages/Quiz';
 import Result from './pages/Result';
 import HeaderActions from './components/HeaderActions'
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -30,12 +31,8 @@ function App() {
             <Route path="/result" element={<Result />} />
           </Routes>
         </main>
-
-        <footer className="mt-4 text-center text-gray-600 text-sm border-t border-gray-800/50 pt-4 pb-4">
-            <p className="font-medium text-gray-500 mb-2 cursor-pointer" onClick={() => window.open("https://github.com/vocaloid2048/ARFC", "_blank")}>ARFC 小組專題性格測驗網站</p>
-            <p className="cursor-pointer" onClick={() => window.open("https://github.com/Vocaloid2048")}>&copy; 2026 Vocaloid2048 版權所有</p>
-
-        </footer>
+        
+        <Footer/>
       </div>
     </Router>
   );
