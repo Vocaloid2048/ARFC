@@ -2,7 +2,7 @@ import React from "react";
 import { Star, ExternalLink, Quote, Sparkles, TestTube2, MessageSquare, Terminal, Target, Clock, Users, MessageCircle, Globe, Compass } from "lucide-react";
 import AboutSection from "../components/AboutSection";
 import AboutGridItem from "../components/AboutGridItem";
-import { locale } from "../utils/UtilTools";
+import { locale } from "../utils/utilTools";
 
 export default function About() {
     return (

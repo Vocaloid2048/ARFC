@@ -1,4 +1,4 @@
-import { locale } from "../utils/UtilTools";
+import { locale } from "../utils/utilTools";
 
 export default function QuizStepDesc({ index, title, desc, color = '#80A1BA' }) {
   return (

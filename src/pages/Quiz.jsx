@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import questionsMeta from '../assets/data/question_data.json';
-import { calculateResult } from '../utils/CalculateResult';
+import { calculateResult } from '../utils/calculateResult';
 import QuizStepDesc from '../components/QuizStepDesc';
 import QuizQuestions from '../components/QuizQuestions';
 import ArfcButton from '../components/ArfcButton';
-import { locale } from '../utils/UtilTools';
+import { locale } from '../utils/utilTools';
 
 const randomizeArray = (array) => {
   const shuffled = [...array];

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import RoleData from '../assets/data/role_data.json';
 import { LucideFileExclamationPoint, ThumbsUp } from 'lucide-react';
 import ArfcButton from '../components/ArfcButton';
-import { convertARFCToLocale, convertTagToLocale, getPercentData, shareResult, locale } from '../utils/UtilTools';
+import { convertARFCToLocale, convertTagToLocale, getPercentData, shareResult, locale } from '../utils/utilTools';
 import ArfcDescBox from '../components/ArfcDescBox';
 import TraitBar from '../components/TraitBar';
 import RoleCard from '../components/RoleCard';
