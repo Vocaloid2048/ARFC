@@ -1,4 +1,4 @@
-import { locale } from "../utils/utilTools";
+import { locale } from "../utils/utilTool";
 
 export default function Footer() {
     return (

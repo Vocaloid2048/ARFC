@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Users, Target, Clock, MessageCircle, BarChart } from 'lucide-react';
 import ArfcDescBox from '../components/ArfcDescBox';
 import ArfcReason from '../components/ArfcReason';
-import { locale } from '../utils/utilTools';
+import { locale } from '../utils/utilTool';
 
 export default function Home() {
   
