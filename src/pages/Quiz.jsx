@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import questionsMeta from '../assets/data/question_data.json';
-import { calculateResult } from '../utils/calculateResult';
+import { calculateResult } from '../utils/resultCalcuation';
 import QuizStepDesc from '../components/QuizStepDesc';
 import QuizQuestions from '../components/QuizQuestions';
 import ArfcButton from '../components/ArfcButton';

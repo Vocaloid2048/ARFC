@@ -1,4 +1,4 @@
-import { arfcMap } from './calculateResult';
+import { arfcMap } from './resultCalcuation';
 import zh_tw from '../assets/lang/zh_tw.json';
 import zh_hk from '../assets/lang/zh_hk.json';
 import zh_cn from '../assets/lang/zh_cn.json';
