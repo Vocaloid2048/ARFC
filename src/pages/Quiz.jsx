@@ -105,7 +105,6 @@ export default function Quiz() {
         {/* Title Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-slate-100 mb-4">{locale('ui.home.project_name.part2')}</h1>
-          <p className="text-xl text-slate-400 font-medium tracking-wide">ARFC Type Indicator</p>
         </div>
 
         {/* Step Indicator Cards */}
