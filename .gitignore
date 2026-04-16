@@ -27,3 +27,6 @@ src/assets/reason
 /.vite
 
 docker-compose.yml
+cert/
+.pem
+nginx.conf

@@ -6,3 +6,6 @@ dist
 .gitignore
 npm-debug.log
 .DS_Store
+cert/
+.pem
+nginx.conf
