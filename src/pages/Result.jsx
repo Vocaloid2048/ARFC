@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RoleData from '../assets/data/role_data.json';
 import { LucideFileExclamationPoint, ThumbsUp } from 'lucide-react';
@@ -6,11 +6,14 @@ import ArfcButton from '../components/ArfcButton';
 import { convertARFCToLocale, convertTagToLocale, getPercentData, shareResult, locale } from '../utils/UtilTools';
 import ArfcDescBox from '../components/ArfcDescBox';
 import TraitBar from '../components/TraitBar';
+import RoleCard from '../components/RoleCard';
+import html2canvas from 'html2canvas-pro';
 
 export default function Result() {
     
     const navigate = useNavigate();
     const [result, setResult] = useState(null);
+    const cardRef = useRef(null);
 
     // Ensure page is at top when Result mounts
     useEffect(() => {
@@ -19,15 +22,12 @@ export default function Result() {
 
     useEffect(() => {
         const saved = localStorage.getItem('arfc_result');
-        console.log('Fetched saved result from localStorage:', saved);
         if (saved) {
             setResult(JSON.parse(saved));
         } else {
             navigate('/quiz');
         }
     }, []);
-
-    console.log('Result data:', result);
 
     if (!result) return <div className="min-h-screen flex justify-center items-center text-white">載入中...</div>;
 
@@ -50,6 +50,20 @@ export default function Result() {
     const cSecondary = roleInfo.colors?.[1] || '#8b5cf6';
     const cHighlight = roleInfo.colors?.[2] || '#ffffff';
     const cBgDeco = roleInfo.colors?.[3] || '#1a1a2e';
+
+    const downloadRoleCard = async () => {
+        if (!cardRef.current) return;
+        try {
+            const canvas = await html2canvas(cardRef.current, { scale: 1, backgroundColor: null });
+            const dataUrl = canvas.toDataURL('image/png');
+            const a = document.createElement('a');
+            a.href = dataUrl;
+            a.download = `${suggestedARFC || 'arfc'}_role_card.png`;
+            a.click();
+        } catch (e) {
+            console.error('Failed to generate role card', e);
+        }
+    };
 
     return (
         <div className="min-h-screen font-sans text-slate-200">
@@ -133,6 +147,11 @@ export default function Result() {
                     </div>
                 </div>
             </section>
+
+            {/* Hidden RoleCard for export (rendered off-screen so html2canvas can capture) */}
+            <div ref={cardRef} style={{ position: 'fixed', left: -9999, top: 0 }}>
+                <RoleCard roleInfo={roleInfo} roleLocaleInfo={roleLocaleInfo} scores={scores} tagRecommend={tagRecommend} suggestedARFC={suggestedARFC} />
+            </div>
 
             {/* MAIN CONTENT CONTAINER */}
             <main className="max-w-6xl mx-auto px-6 py-12 flex flex-col gap-16">
@@ -224,10 +243,10 @@ export default function Result() {
                                         />
 
                                         <ArfcButton
-                                            disabled
+                                            onClick={downloadRoleCard}
                                             text={locale('ui.result.download_card_button')}
                                             bgColor="var(--color-A-dark)"
-                                            className="px-6 py-3 opacity-80"
+                                            className="px-6 py-3"
                                             style={{ border: '1px solid rgba(255,255,255,0.1)' }}
                                         />
                                     </div>

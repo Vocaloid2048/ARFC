@@ -10,4 +10,9 @@ export default defineConfig({
     react(),
     svgr(),
   ],
+  resolve: {
+    alias: {
+      html2canvas: 'html2canvas-pro'
+    }
+  }
 })

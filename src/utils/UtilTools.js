@@ -11,6 +11,18 @@ const LANGS = {
     en_us
 };
 
+export function convertARFCToFancyText(arfcCode) {
+    // 使用 [...] 將字串轉為陣列，這樣每個花體字都會被視為一個完整的元素
+    const abcd = [..."𝒜𝐵𝒞𝒟𝐸𝐹𝒢𝐻𝐼𝒥𝒦𝐿𝑀𝒩𝒪𝒫𝒬𝑅𝒮𝒯𝒰𝒱𝒲𝒳𝒴𝒵"];
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    return arfcCode.split('').map(c => {
+        const idx = alphabet.indexOf(c);
+        // 如果找到了，從陣列中取出完整的字元；否則回傳原字元
+        return idx >= 0 ? abcd[idx] : c;
+    }).join('');
+}
+
 export const AVAILABLE_LANGS = {
     zh_tw: '繁體中文',
     zh_hk: '粵語',

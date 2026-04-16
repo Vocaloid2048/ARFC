@@ -1,12 +1,12 @@
-export default function TraitBar({ labelLeft, labelRight, dim, dimTag, glowColor, percentData }) {
+export default function TraitBar({ labelLeft, labelRight, dim="?", dimTag, glowColor, percentData, isTightMode = false }) {
     const { raw, score, isLeft } = percentData;
     const dominantLabel = isLeft ? labelLeft : labelRight;
     const trackColor = `var(--color-${dimTag})`;
 
     return (
-        <div className="w-full relative mt-8 mb-6">
+        <div className="w-full relative">
             {/* Floating Label (Percentage + Dominant Trait) */}
-            <div
+            {!isTightMode && (<div
                 className="absolute -top-8 text-base font-bold transition-all duration-1000 ease-out whitespace-nowrap z-10"
                 style={{
                     left: `${raw}%`,
@@ -16,7 +16,7 @@ export default function TraitBar({ labelLeft, labelRight, dim, dimTag, glowColor
                 }}
             >
                 {score}% {dominantLabel}
-            </div>
+            </div>)}
 
             {/* Track (Solid Color) */}
             <div
@@ -40,8 +40,8 @@ export default function TraitBar({ labelLeft, labelRight, dim, dimTag, glowColor
 
             {/* Bottom Labels for ends of axis (larger for emphasis) */}
             <div className="flex justify-between text-base md:text-lg font-semibold text-slate-400">
-                <span className={`${isLeft ? 'text-slate-200 font-bold' : ''}`}>{labelLeft}</span>
-                <span className={`${!isLeft ? 'text-slate-200 font-bold' : ''}`}>{labelRight}</span>
+                <span className={`${isLeft ? 'text-slate-200 font-bold text-xl' : 'text-lg'}`}>{labelLeft}</span>
+                <span className={`${!isLeft ? 'text-slate-200 font-bold text-xl' : 'text-lg'}`}>{labelRight}</span>
             </div>
         </div>
     );
