@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Star, Globe, Menu, Info, ArrowBigRightDash } from "lucide-react";
+import { Star, Globe, Menu, Info, ArrowBigRightDash, FileIcon } from "lucide-react";
 import GitHubIcon from "../assets/github_icon.svg?react";
 import { Link } from "react-router-dom";
 import { locale, getCurrentLang, setCurrentLang, AVAILABLE_LANGS } from "../utils/UtilTools";
@@ -78,6 +78,13 @@ export default function HeaderBar() {
           )}
         </div>
 
+        <div className="relative" onClick={() => window.location.href = "/result"}>
+          <button className="inline-flex items-center gap-2 px-3 py-2 rounded-full hover:bg-slate-800 transition">
+            <FileIcon className="w-4 h-4 text-slate-100" />
+            <span className="text-sm text-slate-100">{locale("ui.nav.result")}</span>
+          </button>
+        </div>
+
         <div className="relative" onClick={() => window.location.href = "/about"}>
           <button className="inline-flex items-center gap-2 px-3 py-2 rounded-full hover:bg-slate-800 transition">
             <Info className="w-4 h-4 text-slate-100" />
@@ -118,7 +125,7 @@ export default function HeaderBar() {
         </div>
 
         <button
-          className="inline-flex items-center justify-center w-10 h-10 rounded-full hover:bg-slate-100 transition"
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full hover:bg-slate-800 transition"
           onClick={() => setMobileOpen((v) => !v)}
         >
           <Menu className="w-5 h-5 text-slate-300" />
@@ -154,7 +161,11 @@ export default function HeaderBar() {
                   <Info className="w-4 h-4 text-slate-100" />
                   <span className="text-sm text-slate-100">{locale("ui.nav.about")}</span>
                 </button>
-                <button className="w-full text-left px-4 py-3 flex items-center gap-3 hover:bg-[#fa7d81]" onClick={() => window.location.href = "/quiz"}>
+                <button className="w-full text-left px-4 py-3 hover:bg-slate-600 flex items-center gap-3" onClick={() => window.location.href = "/result"}>
+                  <Star className="w-4 h-4 text-slate-100" />
+                  <span className="text-sm text-slate-100">{locale("ui.nav.result")}</span>
+                </button>
+                <button className="w-full text-left px-4 py-3 flex items-center gap-3 hover:bg-[var(--color-F-dark)]" onClick={() => window.location.href = "/quiz"}>
                   <ArrowBigRightDash className="w-4 h-4 text-slate-100" />
                   <span className="text-sm text-slate-100">{locale("ui.nav.start_button")}</span>
                 </button>
