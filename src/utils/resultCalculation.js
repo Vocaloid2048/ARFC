@@ -1,4 +1,4 @@
-import questionsMeta from '../assets/question_weights.json';
+import questionsMeta from '../assets/data/question_data.json';
 import Translation from "../assets/lang/zh_hk.json";
 
 export const arfcMap = {
@@ -129,3 +129,53 @@ export function convertTagToLocale(tag, score = 0) {
     // last resort: return tag (or include sign)
     return tag;
 }
+
+export function shareResult(result, roleInfo, roleLocaleInfo) {
+    /*
+    我的 ARFC 是 PRBT，代表角色是卡皮巴拉！
+    我具備驚人的抗壓性與包容力，能吸收團隊的負面情緒，在不帶任何壓力的情況下完成後勤工作。
+    #慢工細活 #狂野派系 #計畫通
+
+    以下是我的性格特質：
+    - 60% 務實及格
+    - 52% 預留緩衝
+    - 58% 後勤執行
+    - 52% 婉轉和諧
+
+    既然都看到這邊了，來測！ 
+    https://arfc.voc2048.com
+    */
+
+    // Generate shareable text based on result data
+    const { suggestedARFC, bestARFCPart, tagRecommend, scores } = result;
+    const translation = Translation.ui;
+
+    const shareText =
+        `我的 ARFC 是 *${suggestedARFC}*，是一名${roleLocaleInfo?.tagName}\n`+
+        `代表角色是${roleLocaleInfo?.animal_name || '未知角色'}！\n` +
+        `${roleLocaleInfo?.talent_desc || '我具備獨特的性格特質，能在團隊中發揮重要作用。'}\n` +
+        `${tagRecommend.slice(0, 3).map(t => `#${convertTagToLocale(t.tag, t.score)}`).join(' ')}\n\n` +
+        `以下是我的性格特質：\n` +
+        `${translation.arfc_attitude_target}: ${getPercentData(scores.A, 'A').part} (${getPercentData(scores.A, 'A').score}%)\n` +
+        `${translation.arfc_rythm_of_work}: ${getPercentData(scores.R, 'R').part} (${getPercentData(scores.R, 'R').score}%)\n` +
+        `${translation.arfc_function}: ${getPercentData(scores.F, 'F').part} (${getPercentData(scores.F, 'F').score}%)\n` +
+        `${translation.arfc_communication}: ${getPercentData(scores.C, 'C').part} (${getPercentData(scores.C, 'C').score}%)\n` +
+        `\n` +
+        `既然都看到這邊了，來測！ \nhttps://arfc.voc2048.com`;
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(shareText).then(() => {
+        alert('結果已複製到剪貼簿！快去分享給朋友吧！');
+    }).catch(err => {
+    });
+}
+
+export const getPercentData = (val, category) => {
+    const v = Math.max(-1, Math.min(1, typeof val === 'number' ? val : 0));
+    const isLeft = v <= 0;
+    const strength = Math.abs(v);
+    const score = Math.round(50 + strength * 50);
+    const raw = isLeft ? 100 - score : score;
+    const part = isLeft ? convertARFCToLocale(arfcMap[category]?.neg || "H") : convertARFCToLocale(arfcMap[category]?.pos || "P");
+    return { raw, score, isLeft, part };
+};

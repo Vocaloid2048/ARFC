@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Target, Clock, MessageCircle, BarChart } from 'lucide-react';
 import Translation from "../assets/lang/zh_hk.json";
-import ArfcFramework from '../components/ArfcFramework';
+import ArfcDescBox from '../components/ArfcDescBox';
 import ArfcReason from '../components/ArfcReason';
 
 export default function Home() {
@@ -40,7 +40,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             
             {/* Attitude */}
-            <ArfcFramework
+            <ArfcDescBox
               icon={<Target size={24} />}
               part="A"
               title={translation.arfc_attitude_target}
@@ -51,7 +51,7 @@ export default function Home() {
 
 
             {/* Rhythm */}
-            <ArfcFramework
+            <ArfcDescBox
               icon={<Clock size={24} />}
               part="R"
               title={translation.arfc_rythm_of_work}
@@ -61,7 +61,7 @@ export default function Home() {
             />
 
             {/* Function */}
-            <ArfcFramework
+            <ArfcDescBox
               icon={<Users size={24} />}
               part="F"
               title={translation.arfc_function}
@@ -71,7 +71,7 @@ export default function Home() {
             />
 
             {/* Communication */}
-            <ArfcFramework
+            <ArfcDescBox
               icon={<MessageCircle size={24} />}
               part="C"
               title={translation.arfc_communication}

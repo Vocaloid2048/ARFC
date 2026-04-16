@@ -27,6 +27,10 @@
   --text-inverse: #1E293B; /* for light backgrounds */
   --agree: #2ae19e;
   --disagree: #7451eb;
+  --strength: #22c55e;
+  --weakness: #f43f5e;
+  --strength-dark: #0a4821;
+  --weakness-dark: #5a0b18;
 
 }
 

@@ -4,6 +4,7 @@ import QuestionZH_HK from '../assets/lang/zh_hk.json';
 import { calculateResult } from '../utils/resultCalculation';
 import QuizStepDesc from '../components/QuizStepDesc';
 import QuizQuestions from '../components/QuizQuestions';
+import ArfcButton from '../components/ArfcButton';
 
 const randomizeArray = (array) => {
   const shuffled = [...array];
@@ -152,18 +153,11 @@ export default function Quiz() {
           <p className="text-slate-500 text-sm max-w-md">
             備註：本測試僅供參考，當中評級未經學術研究認證<br />我們不會收集任何個人敏感資料<br />所有測試結果僅儲存於您目前的瀏覽器本地緩存
           </p>
-          <button
+          <ArfcButton
             onClick={handleResultClick}
-            className={`
-              px-12 py-4 rounded-full font-bold text-lg transition-all duration-300
-              ${isAllAnswered
-                ? 'bg-[var(--color-F)] text-[var(--page-bg)] hover:scale-105 shadow-[0_0_20px_rgba(242,193,195,0.4)]'
-                : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
-              }
-            `}
-          >
-            看測試結果
-          </button>
+            text="看測試結果"
+            bgColor={isAllAnswered ? 'var(--color-F-dark)' : '#334155'}
+          />
         </div>
       </div>
     </div>

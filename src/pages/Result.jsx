@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import Translation from '../assets/lang/zh_hk.json';
 import RoleData from '../assets/data/role_data.json';
 import { LucideFileExclamationPoint, ThumbsUp } from 'lucide-react';
-import { arfcMap, convertARFCToLocale, convertTagToLocale } from '../utils/resultCalculation';
+import ArfcButton from '../components/ArfcButton';
+import { convertARFCToLocale, convertTagToLocale, getPercentData, shareResult } from '../utils/resultCalculation';
+import ArfcDescBox from '../components/ArfcDescBox';
 
 export default function Result() {
     const navigate = useNavigate();
@@ -38,64 +40,10 @@ export default function Result() {
     const roleInfo = RoleData.find(r => r.tag === suggestedARFC) || {};
     const roleLocaleInfo = Translation.role.find(r => r.id === roleInfo.id);
 
-    // Calculate percentage for sliders (-3 to +3 mapped to -100 to -50, 50 to 100)
-    const getPercentData = (val, category) => {
-        const v = Math.max(-1, Math.min(1, typeof val === 'number' ? val : 0));
-        const isLeft = v <= 0;
-        const strength = Math.abs(v);
-        const score = Math.round(50 + strength * 50);
-        const raw = isLeft ? 100 - score : score;
-        const part = isLeft ? convertARFCToLocale(arfcMap[category]?.neg || "H") : convertARFCToLocale(arfcMap[category]?.pos || "P");
-        return { raw, score, isLeft, part };
-    };
-
-    function shareResult(result) {
-        /*
-        我的 ARFC 是 PRBT，代表角色是卡皮巴拉！
-        我具備驚人的抗壓性與包容力，能吸收團隊的負面情緒，在不帶任何壓力的情況下完成後勤工作。
-        #慢工細活 #狂野派系 #計畫通
-
-        以下是我的性格特質：
-        - 60% 務實及格
-        - 52% 預留緩衝
-        - 58% 後勤執行
-        - 52% 婉轉和諧
-
-        既然都看到這邊了，來測！ 
-        https://arfc.voc2048.com
-        */
-
-        // Generate shareable text based on result data
-        const { suggestedARFC, bestARFCPart, tagRecommend } = result;
-        const roleInfo = RoleData.find(r => r.tag === suggestedARFC) || {};
-        const roleLocaleInfo = Translation.role.find(r => r.id === roleInfo.id);
-        const translation = Translation.ui;
-        
-        const shareText = 
-            `我的 ARFC 是 ${suggestedARFC}，代表角色是${roleLocaleInfo?.animal_name || '未知角色'}！\n` +
-            `${roleLocaleInfo?.talent_desc || '我具備獨特的性格特質，能在團隊中發揮重要作用。'}\n` +
-            `${tagRecommend.slice(0, 3).map(t => `#${convertTagToLocale(t.tag, t.score)}`).join(' ')}\n\n` +
-            `以下是我的性格特質：\n` +
-            `${translation.arfc_attitude_target}: ${getPercentData(scores.A, 'A').part} (${getPercentData(scores.A, 'A').score}%)\n` +
-            `${translation.arfc_rythm_of_work}: ${getPercentData(scores.R, 'R').part} (${getPercentData(scores.R, 'R').score}%)\n` +
-            `${translation.arfc_function}: ${getPercentData(scores.F, 'F').part} (${getPercentData(scores.F, 'F').score}%)\n` +
-            `${translation.arfc_communication}: ${getPercentData(scores.C, 'C').part} (${getPercentData(scores.C, 'C').score}%)\n`+
-            `\n` +
-            `既然都看到這邊了，來測！ \nhttps://arfc.voc2048.com`;
-
-        // Copy to clipboard
-        navigator.clipboard.writeText(shareText).then(() => {
-            alert('結果已複製到剪貼簿！快去分享給朋友吧！');
-        }).catch(err => {
-        });
-    }
-
     const cPrimary = roleInfo.colors?.[0] || '#2ae19e';
     const cSecondary = roleInfo.colors?.[1] || '#8b5cf6';
     const cHighlight = roleInfo.colors?.[2] || '#ffffff';
     const cBgDeco = roleInfo.colors?.[3] || '#1a1a2e';
-    const strengthColor = '#22c55e'; // green
-    const weaknessColor = '#ef4444'; // red
 
     return (
         <div className="min-h-screen font-sans text-slate-200">
@@ -143,14 +91,20 @@ export default function Result() {
                         </p>
 
                         <div className="flex flex-wrap justify-center md:justify-start gap-4 w-full">
-                            <button onClick={() => navigate('/')} className="bg-[var(--color-C-dark)] text-white font-bold py-4 px-10 rounded-full hover:bg-[var(--color-C-dark)]/50 transition-all border border-white/10 backdrop-blur-sm tracking-widest text-sm"
-                                style={{ boxShadow: `0 0 8px ${cBgDeco}25` }}>
-                                重新測試
-                            </button>
-                            <button onClick={() => shareResult(result)} className="bg-[var(--color-F-dark)] text-white font-bold py-4 px-10 rounded-full hover:bg-[var(--color-F-dark)]/50 transition-all border border-white/10 backdrop-blur-sm tracking-widest text-sm"
-                                style={{ boxShadow: `0 0 8px ${cBgDeco}25` }}>
-                                分享結果
-                            </button>
+                            <ArfcButton
+                                onClick={() => navigate('/')}
+                                text="重新測試"
+                                bgColor="var(--color-C-dark)"
+                                className="py-4 px-10 tracking-widest text-sm backdrop-blur-sm"
+                                style={{ boxShadow: `0 0 8px ${cBgDeco}25` }}
+                            />
+                            <ArfcButton
+                                onClick={() => shareResult(result, roleInfo, roleLocaleInfo)}
+                                text="分享結果"
+                                bgColor="var(--color-F-dark)"
+                                className="py-4 px-10 tracking-widest text-sm backdrop-blur-sm"
+                                style={{ boxShadow: `0 0 8px ${cBgDeco}25` }}
+                            />
                         </div>
                     </div>
 
@@ -186,8 +140,6 @@ export default function Result() {
                         <p className="text-2xl font-black text-white leading-snug relative z-10">
                             <span style={{ color: "#FFFFFF"}}>{roleLocaleInfo?.desc}</span>
                         </p>
-
-                        <blank className="block h-6"></blank>
 
                     </div>
                 </div>
@@ -257,19 +209,21 @@ export default function Result() {
 
                                     {/* 分享與下載按鈕 */}
                                     <div className="mt-6 flex flex-col gap-4">
-                                        <button
-                                            className="inline-flex items-center justify-center px-6 py-3 bg-[var(--color-F-dark)] text-white rounded-full font-bold border border-white/10 cursor-pointer hover:bg-[var(--color-F-dark)]/50 transition-all"
-                                            onClick={() => shareResult(result)}
-                                        >
-                                            分享結果
-                                        </button>
+                                        <ArfcButton
+                                            onClick={() => shareResult(result, roleInfo, roleLocaleInfo)}
+                                            text="分享結果"
+                                            bgColor="var(--color-F-dark)"
+                                            className="px-6 py-3"
+                                            style={{ border: '1px solid rgba(255,255,255,0.1)' }}
+                                        />
 
-                                        <button
+                                        <ArfcButton
                                             disabled
-                                            className="inline-flex items-center justify-center px-6 py-3 bg-[var(--color-A-dark)] text-white rounded-full font-bold opacity-80 cursor-not-allowed border border-white/10 hover:bg-[var(--color-A-dark)]/50"
-                                        >
-                                            下載角色卡
-                                        </button>
+                                            text="下載角色卡"
+                                            bgColor="var(--color-A-dark)"
+                                            className="px-6 py-3 opacity-80"
+                                            style={{ border: '1px solid rgba(255,255,255,0.1)' }}
+                                        />
                                     </div>
 
                                 </div>
@@ -290,36 +244,23 @@ export default function Result() {
                         return (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
                                 {/* Strengths box */}
-                                <div className="p-8 rounded-2xl bg-white/3 border border-white/6">
-                                    <div className="flex items-center gap-4">
-                                        <ThumbsUp className="w-6 h-6" color={strengthColor} />
-                                        <h3 className="text-2xl font-black" style={{ color: strengthColor }}>{talentTitle || '優勢天賦'}</h3>
-                                    </div>
+                                <ArfcDescBox 
+                                    icon={<ThumbsUp size={24} />}
+                                    highlightColor={"var(--strength)"}
+                                    darkColor={"var(--strength-dark)"}
 
-                                    <div className="mt-6">
-                                        {talentDesc ? (
-                                            <Item title={talentDesc} desc={''} />
-                                        ) : (
-                                            <p className="text-slate-400">暫無優勢描述</p>
-                                        )}
-                                    </div>
-                                </div>
+                                    title={talentTitle || '優勢天賦'}
+                                    description={talentDesc || '暫無優勢描述'}
+                                />
 
                                 {/* Weaknesses box */}
-                                <div className="p-8 rounded-2xl bg-white/3 border border-white/6">
-                                    <div className="flex items-center gap-4">
-                                        <LucideFileExclamationPoint className="w-6 h-6" color={weaknessColor} />
-                                        <h3 className="text-2xl font-black" style={{ color: weaknessColor }}>{pitfallTitle || '發展盲區'}</h3>
-                                    </div>
-
-                                    <div className="mt-6">
-                                        {pitfallDesc ? (
-                                            <Item title={pitfallDesc} desc={''} />
-                                        ) : (
-                                            <p className="text-slate-400">暫無盲區描述</p>
-                                        )}
-                                    </div>
-                                </div>
+                                <ArfcDescBox
+                                    icon={<LucideFileExclamationPoint size={24} />}
+                                    highlightColor={"var(--weakness)"}
+                                    darkColor={"var(--weakness-dark)"}
+                                    title={pitfallTitle || '發展盲區'}
+                                    description={pitfallDesc || '暫無盲區描述'}
+                                />
                             </div>
                         );
                     })()}
