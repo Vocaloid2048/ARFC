@@ -8,11 +8,8 @@ export default function Role() {
             <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-8 md:py-12">
                 <div className="text-center mb-12">
                     <h1 className="text-3xl md:text-5xl font-black text-slate-100 mb-4 tracking-tight leading-tight">
-                        所有角色圖鑑
+                        角色圖鑑
                     </h1>
-                    <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto">
-                        探索全部 16 種 ARFC 團隊角色，發掘他們在小組合作中獨特的優勢以及隱藏的盲區。
-                    </p>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">

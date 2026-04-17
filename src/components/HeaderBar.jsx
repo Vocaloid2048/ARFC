@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Star, Globe, Menu, Info, ArrowBigRightDash, FileIcon } from "lucide-react";
+import { Star, Globe, Menu, Info, ArrowBigRightDash, FileIcon, DogIcon } from "lucide-react";
 import GitHubIcon from "../assets/github_icon.svg?react";
 import { Link } from "react-router-dom";
 import { locale, getCurrentLang, setCurrentLang, AVAILABLE_LANGS } from "../utils/utilTool";
@@ -86,6 +86,13 @@ export default function HeaderBar() {
           </button>
         </div>
 
+        <div className="relative" onClick={() => window.location.href = "/role"}>
+          <button className="inline-flex items-center gap-2 px-3 py-2 rounded-full hover:bg-slate-800 transition">
+            <DogIcon className="w-4 h-4 text-slate-100" />
+            <span className="text-sm text-slate-100">{locale("ui.role.title")}</span>
+          </button>
+        </div>
+
         <div className="relative" onClick={() => window.location.href = "/about"}>
           <button className="inline-flex items-center gap-2 px-3 py-2 rounded-full hover:bg-slate-800 transition">
             <Info className="w-4 h-4 text-slate-100" />
@@ -161,6 +168,10 @@ export default function HeaderBar() {
                 <button className="w-full text-left px-4 py-3 hover:bg-slate-600 flex items-center gap-3" onClick={() => window.location.href = "/about"}>
                   <Info className="w-4 h-4 text-slate-100" />
                   <span className="text-sm text-slate-100">{locale("ui.nav.about")}</span>
+                </button>
+                <button className="w-full text-left px-4 py-3 hover:bg-slate-600 flex items-center gap-3" onClick={() => window.location.href = "/role"}>
+                  <DogIcon className="w-4 h-4 text-slate-100" />
+                  <span className="text-sm text-slate-100">{locale("ui.role.title")}</span>
                 </button>
                 <button className="w-full text-left px-4 py-3 hover:bg-slate-600 flex items-center gap-3" onClick={() => window.location.href = "/result"}>
                   <Star className="w-4 h-4 text-slate-100" />
