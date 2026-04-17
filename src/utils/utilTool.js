@@ -11,6 +11,53 @@ const LANGS = {
     en_us
 };
 
+export function tintColor(hex, tint="#ffffff", rate = 0.2) {
+    // hex: base color like '#RRGGBB' (also supports '#RGB')
+    // tint: tint color like '#RRGGBB' (defaults to white)
+    // amount: how much tint to apply (0..1). If tint is provided as third arg (number), support both signatures.
+    // Usage: tintColor('#aa0000') -> slightly tinted towards white
+    //        tintColor('#aa0000', '#ffffff', 0.25)
+    let amount = rate;
+    let tintHex = tint;
+
+    if (typeof tint === 'string') {
+        tintHex = tint || tintHex;
+        // if a third numeric argument was passed via arguments[2]
+        if (typeof arguments[2] === 'number') amount = Math.max(0, Math.min(1, arguments[2]));
+    } else if (typeof tint === 'number') {
+        amount = Math.max(0, Math.min(1, tint));
+    }
+
+    function normalize(h) {
+        if (!h) return '#000000';
+        h = h.trim();
+        if (h[0] === '#') h = h.slice(1);
+        if (h.length === 3) {
+            return h.split('').map(c => c + c).join('');
+        }
+        return h.padStart(6, '0').slice(0, 6);
+    }
+
+    function clamp(n) { return Math.max(0, Math.min(255, Math.round(n))); }
+
+    const base = normalize(hex);
+    const tintN = normalize(tintHex);
+
+    const r1 = parseInt(base.slice(0, 2), 16);
+    const g1 = parseInt(base.slice(2, 4), 16);
+    const b1 = parseInt(base.slice(4, 6), 16);
+
+    const r2 = parseInt(tintN.slice(0, 2), 16);
+    const g2 = parseInt(tintN.slice(2, 4), 16);
+    const b2 = parseInt(tintN.slice(4, 6), 16);
+
+    const r = clamp(r1 * (1 - amount) + r2 * amount);
+    const g = clamp(g1 * (1 - amount) + g2 * amount);
+    const b = clamp(b1 * (1 - amount) + b2 * amount);
+
+    const toHex = (n) => n.toString(16).padStart(2, '0');
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
 export function convertARFCToFancyText(arfcCode) {
     // 使用 [...] 將字串轉為陣列，這樣每個花體字都會被視為一個完整的元素
     const abcd = [..."𝒜𝐵𝒞𝒟𝐸𝐹𝒢𝐻𝐼𝒥𝒦𝐿𝑀𝒩𝒪𝒫𝒬𝑅𝒮𝒯𝒰𝒱𝒲𝒳𝒴𝒵"];
