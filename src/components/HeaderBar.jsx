@@ -48,6 +48,7 @@ function GitHubButton({ repo = "vocaloid2048/ARFC" }) {
 }
 
 export default function HeaderBar() {
+  console.log("HeaderBar getCurrentLang():", getCurrentLang()); // Debug log to check re-renders
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [curLang, setCurLang] = useState(getCurrentLang());

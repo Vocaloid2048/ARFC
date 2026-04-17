@@ -39,7 +39,28 @@ export function locale(key, lang) {
 export function getCurrentLang() {
     try {
         const stored = localStorage.getItem('lang_code');
-        return stored && LANGS[stored] ? stored : 'zh_tw';
+        if (stored && LANGS[stored]) {
+            return stored;
+        }
+        
+        // According to navigator.language or navigator.userLanguage, detect user's device preferred language
+        const navLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+        let detectedLang = 'zh_tw'; // 預設語言
+        
+        if (navLang.includes('zh-tw')) {
+            detectedLang = 'zh_tw';
+        }else if (navLang.includes('zh-hk')) {
+            detectedLang = 'zh_hk';
+        } else if (navLang.includes('zh-cn')) {
+            detectedLang = 'zh_cn';
+        } else if (navLang.startsWith('en')) {
+            detectedLang = 'en_us';
+        }
+        
+        // Use setTimeout to defer the setting of localStorage and event dispatching.
+        setTimeout(() => { setCurrentLang(detectedLang); }, 0);
+        
+        return detectedLang;
     } catch (e) {
         return 'zh_tw';
     }
