@@ -11,7 +11,7 @@ const LANGS = {
     en_us
 };
 
-export function tintColor(hex, tint="#ffffff", rate = 0.2) {
+export function tintColor(hex, tint = "#ffffff", rate = 0.2) {
     // hex: base color like '#RRGGBB' (also supports '#RGB')
     // tint: tint color like '#RRGGBB' (defaults to white)
     // amount: how much tint to apply (0..1). If tint is provided as third arg (number), support both signatures.
@@ -89,24 +89,24 @@ export function getCurrentLang() {
         if (stored && LANGS[stored]) {
             return stored;
         }
-        
+
         // According to navigator.language or navigator.userLanguage, detect user's device preferred language
         const navLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
         let detectedLang = 'zh_tw'; // 預設語言
-        
+
         if (navLang.includes('zh-tw')) {
             detectedLang = 'zh_tw';
-        }else if (navLang.includes('zh-hk')) {
+        } else if (navLang.includes('zh-hk')) {
             detectedLang = 'zh_hk';
         } else if (navLang.includes('zh-cn')) {
             detectedLang = 'zh_cn';
         } else if (navLang.startsWith('en')) {
             detectedLang = 'en_us';
         }
-        
+
         // Use setTimeout to defer the setting of localStorage and event dispatching.
         setTimeout(() => { setCurrentLang(detectedLang); }, 0);
-        
+
         return detectedLang;
     } catch (e) {
         return 'zh_tw';
@@ -115,9 +115,9 @@ export function getCurrentLang() {
 
 export function setCurrentLang(langCode) {
     if (!LANGS[langCode]) return;
-    try { localStorage.setItem('lang_code', langCode); } catch (e) {}
-    try { window.dispatchEvent(new CustomEvent('arfc_lang_changed', { detail: langCode })); } catch (e) {}
-    try { window.location.reload(); } catch (e) {}
+    try { localStorage.setItem('lang_code', langCode); } catch (e) { }
+    try { window.dispatchEvent(new CustomEvent('arfc_lang_changed', { detail: langCode })); } catch (e) { }
+    try { window.location.reload(); } catch (e) { }
 }
 
 
@@ -150,7 +150,7 @@ export function convertTagToLocale(tag, score = 0) {
     return locale(key);
 }
 
-export function shareResult(result, roleInfo, roleLocaleInfo) {
+export async function shareResult(result, roleInfo, roleLocaleInfo, fileToShare) {
     /*
     我的 ARFC 是 PRBT，代表角色是卡皮巴拉！
     我具備驚人的抗壓性與包容力，能吸收團隊的負面情緒，在不帶任何壓力的情況下完成後勤工作。
@@ -165,24 +165,68 @@ export function shareResult(result, roleInfo, roleLocaleInfo) {
     既然都看到這邊了，來測！ 
     https://arfc.voc2048.com
     */
-   
+
     // Generate shareable text based on result data
     const { suggestedARFC, bestARFCPart, tagRecommend, scores } = result;
 
     const shareText = locale("ui.result.share_text")
-    .replace('%1', `**${suggestedARFC}**`)
-    .replace('%2', `${locale("role." + roleInfo?.animal + ".animal_name")}`)
-    .replace('%3', roleLocaleInfo?.talent_desc || '')
-    .replace('%4', tagRecommend.slice(0, 3).map(t => `#${convertTagToLocale(t.tag, t.score)}`).join(' '))
-    .replace('%5', `${locale("ui.arfc.category.attitude_target.title")}: ${getPercentData(scores.A, 'A').part} (${getPercentData(scores.A, 'A').score}%)\n` +
-        `${locale("ui.arfc.category.rythm_of_work.title")}: ${getPercentData(scores.R, 'R').part} (${getPercentData(scores.R, 'R').score}%)\n` +
-        `${locale("ui.arfc.category.function.title")}: ${getPercentData(scores.F, 'F').part} (${getPercentData(scores.F, 'F').score}%)\n` +
-        `${locale("ui.arfc.category.communication.title")}: ${getPercentData(scores.C, 'C').part} (${getPercentData(scores.C, 'C').score}%)\n`
-    ) + `https://arfc.voc2048.com`;
+        .replace('%1', `**${suggestedARFC}**`)
+        .replace('%2', `${locale("role." + roleInfo?.animal + ".animal_name")}`)
+        .replace('%3', roleLocaleInfo?.talent_desc || '')
+        .replace('%4', tagRecommend.slice(0, 3).map(t => `#${convertTagToLocale(t.tag, t.score)}`).join(' '))
+        .replace('%5', `${locale("ui.arfc.category.attitude_target.title")}: ${getPercentData(scores.A, 'A').part} (${getPercentData(scores.A, 'A').score}%)\n` +
+            `${locale("ui.arfc.category.rythm_of_work.title")}: ${getPercentData(scores.R, 'R').part} (${getPercentData(scores.R, 'R').score}%)\n` +
+            `${locale("ui.arfc.category.function.title")}: ${getPercentData(scores.F, 'F').part} (${getPercentData(scores.F, 'F').score}%)\n` +
+            `${locale("ui.arfc.category.communication.title")}: ${getPercentData(scores.C, 'C').part} (${getPercentData(scores.C, 'C').score}%)\n`
+        ) + `https://arfc.voc2048.com`;
 
     // Copy to clipboard
-    navigator.clipboard.writeText(shareText)
+
+    const shareData = {
+        title: locale("ui.result.title"),
+        text: shareText,
+        url: 'https://arfc.voc2048.com',
+        files: fileToShare ? [fileToShare] : undefined
+    }
+
+    const isWindows = navigator.platform.toLowerCase().includes('win');
+    
+
+    if (navigator.canShare && navigator.canShare(shareData) && !isWindows) {
+        return navigator.share(shareData).then(() => {
+            alert(locale("ui.result.share_success"));
+        }).catch(() => {
+            alert(locale("ui.result.share_fail"));
+        });
+    } else if (navigator.clipboard && window.isSecureContext) {
+        return await navigator.clipboard.writeText(shareData.text).then(() => {
+            alert(locale("ui.result.share_success"));
+        }).catch(() => {
+            alert(locale("ui.result.share_fail"));
+        });
+    } else {
+        return new Promise((resolve, reject) => {
+            const textArea = document.createElement("textarea");
+            textArea.value = shareText;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                resolve();
+            } catch (error) {
+                reject(error);
+            } finally {
+                textArea.remove();
+            }
+        });
+    }
 }
+
+
 
 export const getPercentData = (val, category) => {
     const v = Math.max(-1, Math.min(1, typeof val === 'number' ? val : 0));
