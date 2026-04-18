@@ -80,6 +80,8 @@
     "ui.result.pitfall_title": "Potential Blind Spots",
     "ui.result.undefined": "Undefined",
     "ui.result.share_text": "My ARFC is %1, and my representative role is %2!\n%3\n%4\n\nHere are my personality traits:\n%5\n\nI beg you, come test!",
+    "ui.result.share_success": "Share successful!",
+    "ui.result.share_fail": "Share failed, please try again...",
 
     "ui.nav.about": "About ARFC",
     "ui.nav.start_button": "Test Now",

@@ -64,6 +64,20 @@ export default function Result() {
             console.error('Failed to generate role card', e);
         }
     };
+    
+    const fileToShare = async () => {
+        if (!cardRef.current) return null;
+        
+        try {
+            const canvas = await html2canvas(cardRef.current, { scale: 1, backgroundColor: null });
+            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+            const file = new File([blob], `${suggestedARFC || 'arfc'}_role_card.png`, { type: 'image/png' });
+            return file;
+        } catch (e) {
+            console.error('Failed to generate shareable image', e);
+            return null;
+        }
+    }
 
     return (
         <div className="min-h-screen font-sans text-slate-200">
@@ -119,7 +133,7 @@ export default function Result() {
                                 style={{ boxShadow: `0 0 8px ${cBgDeco}25` }}
                             />
                             <ArfcButton
-                                onClick={() => shareResult(result, roleInfo, roleLocaleInfo)}
+                                onClick={async () => await shareResult(result, roleInfo, roleLocaleInfo, await fileToShare())}
                                 text={locale('ui.result.share_button')}
                                 bgColor="var(--color-F-dark)"
                                 className="py-4 px-10 tracking-widest text-sm backdrop-blur-sm"
@@ -235,7 +249,7 @@ export default function Result() {
                                     {/* 分享與下載按鈕 */}
                                     <div className="mt-6 flex flex-col gap-4">
                                         <ArfcButton
-                                            onClick={() => shareResult(result, roleInfo, roleLocaleInfo)}
+                                            onClick={async () => await shareResult(result, roleInfo, roleLocaleInfo, await fileToShare())}
                                             text={locale('ui.result.share_button')}
                                             bgColor="var(--color-F-dark)"
                                             className="px-6 py-3"
