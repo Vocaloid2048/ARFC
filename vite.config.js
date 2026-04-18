@@ -10,16 +10,10 @@ export default defineConfig({
     tailwindcss(),
     react(),
     svgr(),
-    viteBasicSslPlugin(),
   ],
   resolve: {
     alias: {
       html2canvas: 'html2canvas-pro'
     }
   },
-  server: {
-    https: true,
-    host: true,
-    port: 5173,
-  }
 })
