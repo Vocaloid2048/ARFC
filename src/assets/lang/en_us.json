@@ -107,6 +107,8 @@
     "ui.about.join_trans": "Translation Improvements: Again, Issues & PRs are welcome!",
     "ui.about.join_share": "Support: If you find this useful, or just want to see if your friend is a Capybara, why not share it with them?",
     "ui.about.thanks_title": "Special Thanks",
+    "ui.result.good_teammates": "Types Recommended for the Same Team",
+    "ui.result.bad_teammates": "Types Not Recommended for the Same Team",
 
     "ui.role.title": "Role Encyclopedia",
 

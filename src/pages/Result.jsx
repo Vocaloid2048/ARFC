@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import RoleData from '../assets/data/role_data.json';
 import { LucideFileExclamationPoint, ThumbsUp } from 'lucide-react';
 import ArfcButton from '../components/ArfcButton';
-import { convertARFCToLocale, convertTagToLocale, getPercentData, shareResult, locale } from '../utils/utilTool';
+import { convertARFCToLocale, convertTagToLocale, getPercentData, shareResult, locale, tintColor } from '../utils/utilTool';
 import ArfcDescBox from '../components/ArfcDescBox';
 import TraitBar from '../components/TraitBar';
 import RoleCard from '../components/RoleCard';
 import html2canvas from 'html2canvas-pro';
+import { RoleItem } from './Role';
 
 export default function Result() {
-    
+
     const navigate = useNavigate();
     const [result, setResult] = useState(null);
     const cardRef = useRef(null);
@@ -64,10 +65,10 @@ export default function Result() {
             console.error('Failed to generate role card', e);
         }
     };
-    
+
     const fileToShare = async () => {
         if (!cardRef.current) return null;
-        
+
         try {
             const canvas = await html2canvas(cardRef.current, { scale: 1, backgroundColor: null });
             const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
@@ -93,7 +94,7 @@ export default function Result() {
                 <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[260px] h-[260px] rounded-full opacity-25 mix-blend-screen filter blur-[60px] pointer-events-none" style={{ backgroundColor: cHighlight }}></div>
                 <div className="absolute bottom-0 right-10 w-[420px] h-[420px] rounded-full opacity-18 mix-blend-screen filter blur-[90px] pointer-events-none" style={{ backgroundColor: cPrimary }}></div>
                 <div className="absolute top-28 right-44 w-[220px] h-[220px] rounded-full opacity-22 mix-blend-screen filter blur-[70px] pointer-events-none" style={{ backgroundColor: cSecondary }}></div>
-                
+
                 <div className="max-w-6xl mx-auto px-6 relative z-10 flex flex-col-reverse md:flex-row items-center gap-8">
 
                     {/* Left Text Content */}
@@ -110,7 +111,7 @@ export default function Result() {
                                 className="text-2xl px-3 py-1 text-white font-semibold uppercase tracking-wider"
                                 aria-hidden="false"
                             >
-                            {locale('ui.result.role').replace('%1', roleLocaleInfo?.animal_name || locale('ui.result.undefined'))}
+                                {locale('ui.result.role').replace('%1', roleLocaleInfo?.animal_name || locale('ui.result.undefined'))}
                             </span>
                         </div>
                         <div
@@ -177,7 +178,7 @@ export default function Result() {
                             {locale("ui.result.desc")}
                         </h3>
                         <p className="text-2xl font-black text-white leading-snug relative z-10">
-                            <span style={{ color: "#FFFFFF"}}>{roleLocaleInfo?.desc || locale('ui.result.undefined')}</span>
+                            <span style={{ color: "#FFFFFF" }}>{roleLocaleInfo?.desc || locale('ui.result.undefined')}</span>
                         </p>
 
                     </div>
@@ -283,7 +284,7 @@ export default function Result() {
                         return (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
                                 {/* Strengths box */}
-                                <ArfcDescBox 
+                                <ArfcDescBox
                                     icon={<ThumbsUp size={24} />}
                                     highlightColor={"var(--strength)"}
                                     darkColor={"var(--strength-dark)"}
@@ -303,6 +304,49 @@ export default function Result() {
                             </div>
                         );
                     })()}
+                </section>
+
+                {/* Teammates Section */}
+                <section className="flex flex-col gap-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        {/* 適合組員 */}
+                        <div>
+                            <div className="flex items-center gap-3 mb-6 border-b-2 border-slate-700 pb-2">
+                                <ThumbsUp className="text-green-400" size={28} />
+                                <h3 className="text-2xl font-black text-white tracking-widest">{locale('ui.result.good_teammates') || '適合組員'}</h3>
+                            </div>
+                            <div className="grid grid-cols-2 sm:grid-cols-2 gap-6">
+                                {roleInfo.good?.map(tag => {
+                                    const role = RoleData.find(r => r.tag === tag);
+                                    if (!role) return null;
+                                    const animalName = locale(`role.${role.animal}.animal_name`);
+                                    const tagName = locale(`role.${role.animal}.tag.name`);
+                                    return (
+                                        <RoleItem key={role.id} role={role} animalName={animalName} tagName={tagName}/>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* 不宜同組 */}
+                        <div>
+                            <div className="flex items-center gap-3 mb-6 border-b-2 border-slate-700 pb-2">
+                                <LucideFileExclamationPoint className="text-red-400" size={28} />
+                                <h3 className="text-2xl font-black text-white tracking-widest">{locale('ui.result.bad_teammates') || '不宜同組'}</h3>
+                            </div>
+                            <div className="grid grid-cols-2 sm:grid-cols-2 gap-6">
+                                {roleInfo.bad?.map(tag => {
+                                    const role = RoleData.find(r => r.tag === tag);
+                                    if (!role) return null;
+                                    const animalName = locale(`role.${role.animal}.animal_name`);
+                                    const tagName = locale(`role.${role.animal}.tag.name`);
+                                    return (
+                                        <RoleItem key={role.id} role={role} animalName={animalName} tagName={tagName}/>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
             </main>

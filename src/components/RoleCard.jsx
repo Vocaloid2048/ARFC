@@ -2,6 +2,7 @@ import React from 'react';
 import { locale, convertTagToLocale, getPercentData, convertARFCToLocale, convertARFCToFancyText } from '../utils/utilTool';
 import TraitBar from './TraitBar';
 import { ThumbsUp, LucideFileExclamationPoint } from 'lucide-react';
+import RoleData from '../assets/data/role_data.json';
 
 export default function RoleCard({ roleInfo = {}, roleLocaleInfo = {}, scores = {}, tagRecommend = [], suggestedARFC = '' }) {
     const cPrimary = roleInfo.colors?.[0] || '#2ae19e';
@@ -78,7 +79,7 @@ export default function RoleCard({ roleInfo = {}, roleLocaleInfo = {}, scores = 
                 </div>
 
                 {/* 能力值 (Stats - TraitsBar) */}
-                <div className="bg-[#0f172a] rounded-2xl p-8 border-4 border-[#334155] mb-8 mt-6 relative shadow-inner">
+                <div className="bg-[#0f172a] rounded-2xl p-8 border-4 border-[#334155] mb-8 mt-6 relative shadow-inner flex-shrink-0">
                     <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-[#1e293b] px-8 py-2 border-2 border-[#334155] rounded-full text-[#cbd5e1] text-2xl font-black tracking-widest flex items-center justify-center text-center" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>{locale('ui.quiz.progress.title')}</div>
                     <div className="flex flex-col gap-6 mt-6">
                         {['A', 'R', 'F', 'C'].map((k) => {
@@ -97,6 +98,48 @@ export default function RoleCard({ roleInfo = {}, roleLocaleInfo = {}, scores = 
                                 </div>
                             );
                         })}
+                    </div>
+                </div>
+
+                {/* 適合組員 / 不宜同組 */}
+                <div className="flex gap-8 mb-6 mt-2 flex-shrink-0">
+                    {/* 適合組員 */}
+                    <div className="flex-1 bg-[#1e293b] rounded-2xl p-6 border-4 border-[#334155] relative shadow-md">
+                        <div className="absolute -top-5 left-6 bg-[#22c55e] px-4 py-1 rounded-lg text-[#0f172a] text-xl font-bold flex items-center gap-2">
+                            <ThumbsUp size={24} /> {locale('ui.result.good_teammates') || '適合同組的類型'}
+                        </div>
+                        <div className="flex gap-2 mt-1 h-full items-center justify-around">
+                            {roleInfo.good?.map(tag => {
+                                const role = RoleData.find(r => r.tag === tag);
+                                if (!role) return null;
+                                return (
+                                    <div key={role.id} className="flex flex-col items-center">
+                                        <div className="rounded-full bg-[#0f172a] border-4 flex items-center justify-center overflow-hidden shadow-inner" style={{ borderColor: role.colors[0], background: `linear-gradient(135deg, ${role.colors[0]}15, ${role.colors[1]}30)` }}>
+                                            <img src={`/role_images/${role.image}`} alt={tag} className="w-24 h-24 object-contain" />
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                    {/* 不宜同組 */}
+                    <div className="flex-1 bg-[#1e293b] rounded-2xl p-6 border-4 border-[#334155] relative shadow-md">
+                        <div className="absolute -top-5 left-6 bg-[#ef4444] px-4 py-1 rounded-lg text-[#f8fafc] text-xl font-bold flex items-center gap-2">
+                            <LucideFileExclamationPoint size={24} /> {locale('ui.result.bad_teammates') || '不建議同組的類型'}
+                        </div>
+                        <div className="flex gap-2 mt-1 h-full items-center justify-around">
+                            {roleInfo.bad?.map(tag => {
+                                const role = RoleData.find(r => r.tag === tag);
+                                if (!role) return null;
+                                return (
+                                    <div key={role.id} className="flex flex-col items-center">
+                                        <div className="rounded-full bg-[#0f172a] border-4 flex items-center justify-center overflow-hidden shadow-inner" style={{ borderColor: role.colors[0], background: `linear-gradient(135deg, ${role.colors[0]}15, ${role.colors[1]}30)` }}>
+                                            <img src={`/role_images/${role.image}`} alt={tag} className="w-24 h-24 object-contain" />
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
 

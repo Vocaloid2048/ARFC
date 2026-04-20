@@ -81,6 +81,8 @@
     "ui.result.share_text": "我的 ARFC 是 %1，代表角色是 %2！\n%3\n%4\n\n以下是我的性格特質：\n%5\n\n既然都看到這邊了，來測！",
     "ui.result.share_success": "複製成功！快去分享給你的朋友吧！",
     "ui.result.share_fail": "複製失敗，請重試...",
+    "ui.result.good_teammates": "適合同組的類型",
+    "ui.result.bad_teammates": "不建議同組的類型",
 
     "ui.nav.about": "關於 ARFC",
     "ui.nav.start_button": "立即測試",
